@@ -10,6 +10,9 @@ HISTFILE=$HOME/.zhistory
 SAVEHIST=999999
 HISTSIZE=999999
 
+# bash-like forward and backward word
+export WORDCHARS=''
+
 # colors
 autoload -U colors && colors
 PS1=$'\e[1;33mλ %~> \e[0m'
