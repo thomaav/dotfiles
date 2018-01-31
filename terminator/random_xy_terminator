@@ -1,0 +1,6 @@
+#!/bin/bash
+
+x=$(shuf --input-range=100-650 -n1)
+y=$(shuf --input-range=100-400 -n1)
+
+bash -c "terminator --geometry=1000x800+$x+$y --working-directory=/home/thomaav & disown terminator"

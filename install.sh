@@ -16,3 +16,4 @@ symlink()
 echo "Installing dotfiles.."
 
 symlink "emacs/.emacs" ".emacs"
+symlink "terminator/config" ".config/terminator/config"

@@ -1,0 +1,25 @@
+[global_config]
+  dbus = False
+  focus = mouse
+[keybindings]
+[layouts]
+  [[default]]
+    [[[child1]]]
+      parent = window0
+      profile = default
+      type = Terminal
+    [[[window0]]]
+      parent = ""
+      size = 1000, 800
+      type = Window
+[plugins]
+[profiles]
+  [[default]]
+    background_darkness = 0.77
+    background_type = transparent
+    cursor_color = "#ffffff"
+    font = Consolas 11
+    foreground_color = "#ffffff"
+    scrollbar_position = hidden
+    show_titlebar = False
+    use_system_font = False
