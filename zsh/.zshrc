@@ -15,7 +15,7 @@ export WORDCHARS=''
 
 # colors
 autoload -U colors && colors
-PS1=$'\e[1;33mλ %~> \e[0m'
+PS1="%{$fg[yellow]%}λ %~> %{$reset_color%}"
 LS_COLORS=$LS_COLORS:'di=0;34:fi=0;32:ln=1;33:' ; export LS_COLORS
 
 # general
