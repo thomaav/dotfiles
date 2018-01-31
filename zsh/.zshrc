@@ -6,7 +6,7 @@ fi
 export MAKEFLAGS='-j4'
 
 # history
-HISTFILE=.zhistory
+HISTFILE=$HOME/.zhistory
 SAVEHIST=999999
 HISTSIZE=999999
 

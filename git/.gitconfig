@@ -1,0 +1,13 @@
+[core]
+	editor = emacs -nw
+	mergetool = emacs -nw
+	filemode = false
+
+[user]
+	name = Thomas Aven
+	email = avensin@hotmail.com
+
+[alias]
+	st = status
+	cl = clone
+	ci = commit
