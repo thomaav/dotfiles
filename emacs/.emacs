@@ -146,3 +146,22 @@
 	      indent-tabs-mode t)
 ;; offset for labels in class
 (c-set-offset 'access-label '-)
+
+;; whitespace functions
+(defun previous-blank-line ()
+  "Moves to the previous line containing nothing but whitespace."
+  (interactive)
+  (search-backward-regexp "^[ \t]*\n")
+  )
+
+(defun next-blank-line ()
+  "Moves to the next line containing nothing but whitespace."
+  (interactive)
+  (forward-line)
+  (search-forward-regexp "^[ \t]*\n")
+  (forward-line -1)
+  )
+
+;; fast forward rewind cursor
+(global-set-key (kbd "M-e") 'next-blank-line)
+(global-set-key (kbd "M-a") 'previous-blank-line)
