@@ -138,3 +138,11 @@
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+
+;; c++ mode
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+(setq-default c-basic-offset 8
+	      tab-width 8
+	      indent-tabs-mode t)
+;; offset for labels in class
+(c-set-offset 'access-label '-)
