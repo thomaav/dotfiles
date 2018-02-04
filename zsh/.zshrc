@@ -3,7 +3,7 @@ if [[ -s "$HOME/.zshrc.local" ]]; then
 fi
 
 # compiling
-export MAKEFLAGS='-j4'
+export MAKEFLAGS='-j4 --no-print-directory'
 
 # history
 HISTFILE=$HOME/.zhistory
