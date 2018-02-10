@@ -173,3 +173,12 @@
 ;; fast forward rewind cursor
 (global-set-key (kbd "M-e") 'next-blank-line)
 (global-set-key (kbd "M-a") 'previous-blank-line)
+
+;; rebinding
+(global-set-key (kbd "ø") (kbd "{"))
+(global-set-key (kbd "æ") (kbd "}"))
+(global-set-key (kbd "Ø") (kbd "("))
+(global-set-key (kbd "Æ") (kbd ")"))
+(global-set-key (kbd "€") (kbd "["))
+(global-set-key (kbd "®") (kbd "]"))
+(global-set-key (kbd "å") (kbd "/"))
