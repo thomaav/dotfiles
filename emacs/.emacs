@@ -203,3 +203,6 @@
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((latex . t)))
+
+;; save desktop session
+(desktop-save-mode 1)
