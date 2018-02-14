@@ -185,3 +185,21 @@
 
 ;; magit
 (global-set-key (kbd "C-x g") 'magit-status)
+
+;; Exporting latex / pdflatex
+(require 'ox-latex)
+(unless (boundp 'org-latex-classes)
+  (setq org-latex-classes nil))
+
+(add-to-list 'org-latex-classes
+             '("thomaav"
+               "\\documentclass[absract=on,a4paper]{scrreprt}"
+               ("\\section{%s}" . "\\section*{%s}")
+               ("\\subsection{%s}" . "\\subsection*{%s}")
+               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+               ("\\paragraph{%s}" . "\\paragraph*{%s}")
+               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((latex . t)))
