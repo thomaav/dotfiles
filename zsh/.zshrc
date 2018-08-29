@@ -31,6 +31,7 @@ alias whatismyip='curl ifconfig.co'
 alias 'nwemacs'='emacs -nw'
 alias 'calw'='gcalcli calw 2 now -w 15'
 alias 'agenda'='gcalcli agenda'
+alias 'g'='gcalcli'
 
 # thefuck
 eval $(thefuck --alias)
