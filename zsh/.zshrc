@@ -9,6 +9,7 @@ export MAKEFLAGS='-j4 --no-print-directory'
 HISTFILE=$HOME/.zhistory
 SAVEHIST=999999
 HISTSIZE=999999
+setopt HIST_IGNORE_SPACE
 
 # bash-like forward and backward word
 export WORDCHARS=''
@@ -24,8 +25,15 @@ alias ls='ls --color=auto'
 alias ll='ls -lah'
 alias cd..='cd ..'
 alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
 alias whatismyip='curl ifconfig.co'
 alias 'nwemacs'='emacs -nw'
+alias 'calw'='gcalcli calw 2 now -w 15'
+alias 'agenda'='gcalcli agenda'
+
+# thefuck
+eval $(thefuck --alias)
 
 extract () {
 	if [ -f $1 ] ; then

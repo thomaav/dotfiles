@@ -206,3 +206,20 @@
 
 ;; save desktop session
 (desktop-save-mode 1)
+
+;; slideshow
+(add-to-list 'load-path "~/.emacs.d/org-tree/")
+(require 'org-tree-slide)
+
+(when (require 'org-tree-slide nil t)
+  (global-set-key (kbd "<f8>") 'org-tree-slide-mode)
+  (global-set-key (kbd "S-<f8>") 'org-tree-slide-skip-done-toggle)
+  (define-key org-tree-slide-mode-map (kbd "<f9>")
+    'org-tree-slide-move-previous-tree)
+  (define-key org-tree-slide-mode-map (kbd "<f10>")
+    'org-tree-slide-move-next-tree)
+  (define-key org-tree-slide-mode-map (kbd "<f11>")
+    'org-tree-slide-content)
+  (setq org-tree-slide-skip-outline-level 4)
+  (org-tree-slide-narrowing-control-profile)
+  (setq org-tree-slide-skip-done nil))
