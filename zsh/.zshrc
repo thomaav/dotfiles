@@ -3,7 +3,7 @@ if [[ -s "$HOME/.zshrc.local" ]]; then
 fi
 
 # compiling
-export MAKEFLAGS='-j4 --no-print-directory'
+export MAKEFLAGS='--no-print-directory'
 
 # history
 HISTFILE=$HOME/.zhistory
@@ -13,6 +13,7 @@ setopt HIST_IGNORE_SPACE
 
 # bash-like forward and backward word
 export WORDCHARS=''
+export PATH=$PATH:/home/thomaav/Xilinx/Vivado/2016.4/bin
 
 # colors
 autoload -U colors && colors
