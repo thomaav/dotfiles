@@ -30,7 +30,7 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 alias whatismyip='curl ifconfig.co'
 alias 'nwemacs'='emacs -nw'
-alias 'calw'='gcalcli calw 2 now -w 15'
+alias 'calw'='gcalcli calw 2 now -w 15 --monday'
 alias 'agenda'='gcalcli agenda'
 alias 'g'='gcalcli'
 
