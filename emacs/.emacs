@@ -223,3 +223,14 @@
   (setq org-tree-slide-skip-outline-level 4)
   (org-tree-slide-narrowing-control-profile)
   (setq org-tree-slide-skip-done nil))
+
+
+(eval-after-load "org"
+  '(progn
+     ;; .txt files aren't in the list initially, but in case that changes
+     ;; in a future version of org, use if to avoid errors
+     (if (assoc "\\.txt\\'" org-file-apps)
+         (setcdr (assoc "\\.txt\\'" org-file-apps) "notepad.exe %s")
+       (add-to-list 'org-file-apps '("\\.txt\\'" . "notepad.exe %s") t))
+     ;; Change .pdf association directly within the alist
+     (setcdr (assoc "\\.pdf\\'" org-file-apps) "evince %s")))
