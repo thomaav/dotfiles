@@ -245,3 +245,8 @@
 (setq org-latex-minted-options '(("breaklines" "true")
                                  ("breakanywhere" "true")))
 
+;; ask to auto fill lines on text files
+(add-hook 'text-mode-hook
+	  (lambda ()
+	    (when (y-or-n-p "Auto Fill mode? ")
+	      (turn-on-auto-fill))))
