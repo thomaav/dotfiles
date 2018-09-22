@@ -234,3 +234,14 @@
        (add-to-list 'org-file-apps '("\\.txt\\'" . "notepad.exe %s") t))
      ;; Change .pdf association directly within the alist
      (setcdr (assoc "\\.pdf\\'" org-file-apps) "evince %s")))
+
+;; minted color source
+(setq org-latex-listings 'minted
+      org-latex-packages-alist '(("" "minted"))
+      org-latex-pdf-process
+      '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+        "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+
+(setq org-latex-minted-options '(("breaklines" "true")
+                                 ("breakanywhere" "true")))
+
