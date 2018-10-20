@@ -120,8 +120,8 @@
 (nyan-toggle-wavy-trail)
 
 ;; auto-complete
-(ac-config-default)
-(global-auto-complete-mode t)
+;; (ac-config-default)
+;; (global-auto-complete-mode t)
 
 ;; linum - line numbers
 (require 'linum-relative)
@@ -182,6 +182,11 @@
 (global-set-key (kbd "€") (kbd "["))
 (global-set-key (kbd "®") (kbd "]"))
 (global-set-key (kbd "å") (kbd "/"))
+(global-set-key (kbd "C-|") (kbd "λ"))
+(global-set-key (kbd "ð") 'undo)
+(global-set-key (kbd "ª") 'counsel-ag)
+(global-set-key (kbd "C-s") 'swiper)
+(global-set-key (kbd "C-r") 'swiper)
 
 ;; magit
 (global-set-key (kbd "C-x g") 'magit-status)
