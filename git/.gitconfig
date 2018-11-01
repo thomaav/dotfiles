@@ -1,6 +1,6 @@
 [core]
-	editor = emacs -nw
-	mergetool = emacs -nw
+	editor = vim
+	mergetool = vim
 	filemode = false
 
 [user]
