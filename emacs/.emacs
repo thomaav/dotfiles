@@ -187,6 +187,7 @@
 (global-set-key (kbd "ª") 'counsel-ag)
 (global-set-key (kbd "C-s") 'swiper)
 (global-set-key (kbd "C-r") 'swiper)
+(global-set-key (kbd "@") 'kill-whole-line)
 
 ;; magit
 (global-set-key (kbd "C-x g") 'magit-status)
@@ -255,3 +256,6 @@
 	  (lambda ()
 	    (when (y-or-n-p "Auto Fill mode? ")
 	      (turn-on-auto-fill))))
+
+;; ivy
+(ivy-mode 1)
