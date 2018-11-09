@@ -32,6 +32,21 @@
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "Consolas" :foundry "outline" :slant normal :weight normal :height 130 :width normal)))))
 
+;; installer
+(setq package-list '(cyberpunk-theme projectile helm-projectile popwin nyan-mode nlinum-relative beacon smooth-scrolling expand-region multiple-cursors org-tree-slide ivy swiper counsel))
+
+;; activate all the packages (in particular autoloads)
+(package-initialize)
+
+;; fetch the list of packages available
+(unless package-archive-contents
+  (package-refresh-contents))
+
+;; install the missing packages
+(dolist (package package-list)
+  (unless (package-installed-p package)
+    (package-install package)))
+
 ;; M-n, M-p for next/previous window
 (defun prev-window ()
   (interactive)
