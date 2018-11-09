@@ -101,9 +101,6 @@
 (global-set-key (kbd "<C-i>") 'avy-goto-char)
 (global-set-key (kbd "TAB") #'indent-for-tab-command)
 
-;; anzu-mode to display amount of matches
-(global-anzu-mode +1)
-
 ;; projectile
 (require 'projectile)
 (projectile-mode 1)
