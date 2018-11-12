@@ -22,7 +22,7 @@
  '(inhibit-startup-screen t)
  '(package-selected-packages
    (quote
-    (magit bison-mode avy helm-ag helm-projectile projectile glsl-mode multiple-cursors zenburn-theme smooth-scrolling popwin org nyan-mode nlinum-relative lua-mode linum-relative helm haskell-mode gruber-darker-theme go-mode expand-region cyberpunk-theme beacon anzu ac-alchemist)))
+    (fireplace scala-mode magit bison-mode avy helm-ag helm-projectile projectile glsl-mode multiple-cursors zenburn-theme smooth-scrolling popwin org nyan-mode nlinum-relative lua-mode linum-relative helm haskell-mode gruber-darker-theme go-mode expand-region cyberpunk-theme beacon anzu ac-alchemist)))
  '(show-paren-mode t)
  '(show-trailing-whitespace t))
 (custom-set-faces
@@ -31,6 +31,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "Consolas" :foundry "outline" :slant normal :weight normal :height 130 :width normal)))))
+(set-default-font "Consolas")
 
 ;; installer
 (setq package-list '(cyberpunk-theme projectile helm-projectile popwin nyan-mode nlinum-relative beacon smooth-scrolling expand-region multiple-cursors org-tree-slide ivy swiper counsel))
@@ -271,3 +272,37 @@
 
 ;; ivy
 (ivy-mode 1)
+
+;; scroll in place
+(defun scroll-in-place (scroll-up)
+  "Scroll window up (or down) without moving point (if possible).
+
+SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
+  (interactive)
+  (let ((pos (point))
+                (col (current-column))
+                (up-or-down (if scroll-up 1 -1)))
+        (scroll-up up-or-down)
+        (if (pos-visible-in-window-p pos)
+                (goto-char pos)
+          (if (or (eq last-command 'next-line)
+                          (eq last-command 'previous-line))
+                  (move-to-column temporary-goal-column)
+                (move-to-column col)
+                (setq temporary-goal-column col))
+          (setq this-command 'next-line))))
+
+;;;; ------------------------------------------------------------------------
+(defun scroll-up-in-place ()
+  "Scroll window up without moving point (if possible)."
+  (interactive)
+  (scroll-in-place t))
+
+;;;; ------------------------------------------------------------------------
+(defun scroll-down-in-place ()
+  "Scroll window up without moving point (if possible)."
+  (interactive)
+  (scroll-in-place nil))
+
+(global-set-key (kbd "π") 'scroll-up-in-place)
+(global-set-key (kbd "“") 'scroll-down-in-place)
