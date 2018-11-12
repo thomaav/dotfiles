@@ -35,7 +35,7 @@ alias 'agenda'='gcalcli agenda'
 alias 'g'='gcalcli'
 
 # thefuck
-eval $(thefuck --alias)
+# eval $(thefuck --alias)
 
 extract () {
 	if [ -f $1 ] ; then
