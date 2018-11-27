@@ -224,7 +224,7 @@
  '((latex . t)))
 
 ;; save desktop session
-(desktop-save-mode 1)
+;; (desktop-save-mode 1)
 
 ;; slideshow
 (add-to-list 'load-path "~/.emacs.d/org-tree/")
