@@ -1,13 +1,12 @@
 (define-coding-system-alias 'utf8 'utf-8)
 
 ;; add melpa for package management
-(when (>= emacs-major-version 24)
-  (require 'package)
-  (add-to-list
-   'package-archives
-   '("melpa" . "http://melpa.org/packages/")
-   t)
-  (package-initialize))
+(require 'package)
+(add-to-list
+ 'package-archives
+ '("melpa" . "http://melpa.org/packages/")
+ t)
+(package-initialize)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -16,14 +15,14 @@
  ;; If there is more than one, they won't work right.
  '(ansi-color-names-vector
    ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
- '(custom-safe-themes
-   (quote
-    ("38e64ea9b3a5e512ae9547063ee491c20bd717fe59d9c12219a0b1050b439cdd" "0537901f4422f0d5f41ff43e51e39dc17d45d254fa36ce8d8d2786457759aef9" "ad54e72e0f587b7f5325bfa1de8ef8e2b3d0272d52a7ec6c553389548539f01a" "03a885ae72ea4e31e28521194e0a569e9c8fe8b7c751b6f6701b1446ee226f4d" "770181eda0f652ef9293e8db103a7e5ca629c516ca33dfa4709e2c8a0e7120f3" "20e359ef1818a838aff271a72f0f689f5551a27704bf1c9469a5c2657b417e6c" "13de1e95bbc7475e680e50333e9418becef53cb7f41ab632261efd13f9a4f57d" default)))
- '(fci-rule-color "#383838")
  '(inhibit-startup-screen t)
  '(package-selected-packages
    (quote
-    (fireplace scala-mode magit bison-mode avy helm-ag helm-projectile projectile glsl-mode multiple-cursors zenburn-theme smooth-scrolling popwin org nyan-mode nlinum-relative lua-mode linum-relative helm haskell-mode gruber-darker-theme go-mode expand-region cyberpunk-theme beacon anzu ac-alchemist)))
+    (scala-mode magit bison-mode avy helm-ag helm-projectile projectile
+     glsl-mode multiple-cursors zenburn-theme smooth-scrolling
+     popwin org nyan-mode nlinum-relative lua-mode linum-relative
+     helm haskell-mode gruber-darker-theme go-mode expand-region
+     cyberpunk-theme beacon anzu ac-alchemist)))
  '(show-paren-mode t)
  '(show-trailing-whitespace t))
 (custom-set-faces
@@ -35,7 +34,11 @@
 (set-default-font "Consolas")
 
 ;; installer
-(setq package-list '(cyberpunk-theme projectile helm-projectile popwin nyan-mode nlinum-relative beacon smooth-scrolling expand-region multiple-cursors org-tree-slide ivy swiper counsel))
+(setq package-list
+      '(cyberpunk-theme projectile helm-projectile popwin
+	nyan-mode nlinum-relative beacon smooth-scrolling
+        expand-region multiple-cursors org-tree-slide ivy
+	swiper counsel))
 
 ;; activate all the packages (in particular autoloads)
 (package-initialize)
@@ -91,11 +94,19 @@
 ;; load pyberpunk theme
 (load-theme 'cyberpunk t)
 
-;; indentation
+;; c++ mode
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+;; offset for labels in class
+(c-set-offset 'access-label '-)
+
+;; indentation for C, c++, glsl
 (defvaralias 'c-basic-offset 'tab-width)
-(put 'downcase-region 'disabled nil)
-(setq tab-width 4)
-(setq indent-tabs-mode nil)
+(defun c-mode-indentation ()
+  (setq-default tab-width 4)
+  (setq-default indent-tabs-mode nil))
+(add-hook 'c-mode-hook 'c-mode-indentation)
+(add-hook 'c++-mode-hook 'c-mode-indentation)
+(add-hook 'glsl-mode-hook 'c-mode-indentation)
 
 ;; bind avy-goto-char
 (define-key input-decode-map [?\C-i] [C-i]) ;; only works in gui mode
@@ -132,10 +143,6 @@
 (nyan-start-animation)
 (nyan-toggle-wavy-trail)
 
-;; auto-complete
-;; (ac-config-default)
-;; (global-auto-complete-mode t)
-
 ;; linum - line numbers
 (require 'linum-relative)
 (global-nlinum-relative-mode t)
@@ -151,22 +158,11 @@
 (global-set-key (kbd "C-q") 'er/expand-region)
 (put 'upcase-region 'disabled nil)
 
-;; for tomorrow
-;; use altgr + f to go to _beginning_ of next word, expand on this
-
 ;; multiple cursors
 (require 'multiple-cursors)
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 (global-set-key (kbd "C-j") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-S-j") 'mc/mark-previous-like-this)
-
-;; c++ mode
-(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
-(setq-default c-basic-offset 8
-	      tab-width 8
-	      indent-tabs-mode t)
-;; offset for labels in class
-(c-set-offset 'access-label '-)
 
 ;; whitespace functions
 (defun previous-blank-line ()
@@ -202,9 +198,6 @@
 (global-set-key (kbd "C-r") 'swiper)
 (global-set-key (kbd "@") 'kill-whole-line)
 
-;; magit
-(global-set-key (kbd "C-x g") 'magit-status)
-
 ;; Exporting latex / pdflatex
 (require 'ox-latex)
 (unless (boundp 'org-latex-classes)
@@ -222,27 +215,6 @@
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((latex . t)))
-
-;; save desktop session
-;; (desktop-save-mode 1)
-
-;; slideshow
-(add-to-list 'load-path "~/.emacs.d/org-tree/")
-(require 'org-tree-slide)
-
-(when (require 'org-tree-slide nil t)
-  (global-set-key (kbd "<f8>") 'org-tree-slide-mode)
-  (global-set-key (kbd "S-<f8>") 'org-tree-slide-skip-done-toggle)
-  (define-key org-tree-slide-mode-map (kbd "<f9>")
-    'org-tree-slide-move-previous-tree)
-  (define-key org-tree-slide-mode-map (kbd "<f10>")
-    'org-tree-slide-move-next-tree)
-  (define-key org-tree-slide-mode-map (kbd "<f11>")
-    'org-tree-slide-content)
-  (setq org-tree-slide-skip-outline-level 4)
-  (org-tree-slide-narrowing-control-profile)
-  (setq org-tree-slide-skip-done nil))
-
 
 (eval-after-load "org"
   '(progn
@@ -306,3 +278,6 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 
 (global-set-key (kbd "π") 'scroll-up-in-place)
 (global-set-key (kbd "“") 'scroll-down-in-place)
+
+;; for tomorrow
+;; use altgr + f to go to _beginning_ of next word, expand on this
