@@ -18,7 +18,8 @@
    ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
  '(custom-safe-themes
    (quote
-    ("0537901f4422f0d5f41ff43e51e39dc17d45d254fa36ce8d8d2786457759aef9" "ad54e72e0f587b7f5325bfa1de8ef8e2b3d0272d52a7ec6c553389548539f01a" "03a885ae72ea4e31e28521194e0a569e9c8fe8b7c751b6f6701b1446ee226f4d" "770181eda0f652ef9293e8db103a7e5ca629c516ca33dfa4709e2c8a0e7120f3" "20e359ef1818a838aff271a72f0f689f5551a27704bf1c9469a5c2657b417e6c" "13de1e95bbc7475e680e50333e9418becef53cb7f41ab632261efd13f9a4f57d" default)))
+    ("38e64ea9b3a5e512ae9547063ee491c20bd717fe59d9c12219a0b1050b439cdd" "0537901f4422f0d5f41ff43e51e39dc17d45d254fa36ce8d8d2786457759aef9" "ad54e72e0f587b7f5325bfa1de8ef8e2b3d0272d52a7ec6c553389548539f01a" "03a885ae72ea4e31e28521194e0a569e9c8fe8b7c751b6f6701b1446ee226f4d" "770181eda0f652ef9293e8db103a7e5ca629c516ca33dfa4709e2c8a0e7120f3" "20e359ef1818a838aff271a72f0f689f5551a27704bf1c9469a5c2657b417e6c" "13de1e95bbc7475e680e50333e9418becef53cb7f41ab632261efd13f9a4f57d" default)))
+ '(fci-rule-color "#383838")
  '(inhibit-startup-screen t)
  '(package-selected-packages
    (quote
@@ -93,9 +94,8 @@
 ;; indentation
 (defvaralias 'c-basic-offset 'tab-width)
 (put 'downcase-region 'disabled nil)
-;; (setq tab-stop-list '(4 8 12 16 20 24 28 32 36 40 44 48 52 56 60 64 68 72 76 80))
-;; (setq tab-width 4)
-;; (setq indent-tabs-mode t)
+(setq tab-width 4)
+(setq indent-tabs-mode nil)
 
 ;; bind avy-goto-char
 (define-key input-decode-map [?\C-i] [C-i]) ;; only works in gui mode
