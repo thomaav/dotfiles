@@ -279,5 +279,6 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (global-set-key (kbd "π") 'scroll-up-in-place)
 (global-set-key (kbd "“") 'scroll-down-in-place)
 
-;; for tomorrow
-;; use altgr + f to go to _beginning_ of next word, expand on this
+;; use altgr + f to go to _beginning_ of next word
+(global-set-key (kbd "đ") 'forward-to-word)
+(global-set-key (kbd "”") 'backward-to-word)
