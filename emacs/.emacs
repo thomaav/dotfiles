@@ -19,10 +19,10 @@
  '(package-selected-packages
    (quote
     (scala-mode magit bison-mode avy helm-ag helm-projectile projectile
-     glsl-mode multiple-cursors zenburn-theme smooth-scrolling
-     popwin org nyan-mode nlinum-relative lua-mode linum-relative
-     helm haskell-mode gruber-darker-theme go-mode expand-region
-     cyberpunk-theme beacon anzu ac-alchemist)))
+                glsl-mode multiple-cursors zenburn-theme smooth-scrolling
+                popwin org nyan-mode nlinum-relative lua-mode linum-relative
+                helm haskell-mode gruber-darker-theme go-mode expand-region
+                cyberpunk-theme beacon anzu ac-alchemist)))
  '(show-paren-mode t)
  '(show-trailing-whitespace t))
 (custom-set-faces
@@ -36,9 +36,9 @@
 ;; installer
 (setq package-list
       '(cyberpunk-theme projectile helm-projectile popwin
-	nyan-mode nlinum-relative beacon smooth-scrolling
-        expand-region multiple-cursors org-tree-slide ivy
-	swiper counsel))
+                        nyan-mode nlinum-relative beacon smooth-scrolling
+                        expand-region multiple-cursors org-tree-slide ivy
+                        swiper counsel flycheck))
 
 ;; activate all the packages (in particular autoloads)
 (package-initialize)
@@ -197,6 +197,7 @@
 (global-set-key (kbd "C-s") 'swiper)
 (global-set-key (kbd "C-r") 'swiper)
 (global-set-key (kbd "@") 'kill-whole-line)
+(global-set-key (kbd "C-ø") 'subword-backward-kill)
 
 ;; Exporting latex / pdflatex
 (require 'ox-latex)
@@ -280,5 +281,6 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (global-set-key (kbd "“") 'scroll-down-in-place)
 
 ;; use altgr + f to go to _beginning_ of next word
+(require 'misc)
 (global-set-key (kbd "đ") 'forward-to-word)
 (global-set-key (kbd "”") 'backward-to-word)
