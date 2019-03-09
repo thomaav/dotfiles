@@ -143,10 +143,6 @@
 (nyan-start-animation)
 (nyan-toggle-wavy-trail)
 
-;; linum - line numbers
-(require 'linum-relative)
-(global-nlinum-relative-mode t)
-
 ;; beacon (light on marker when scrolling)
 (beacon-mode 1)
 
@@ -284,3 +280,6 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (require 'misc)
 (global-set-key (kbd "đ") 'forward-to-word)
 (global-set-key (kbd "”") 'backward-to-word)
+
+;; git-gutter
+(global-git-gutter-mode +1)
