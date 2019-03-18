@@ -276,6 +276,7 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (global-set-key (kbd "π") 'scroll-up-in-place)
 (global-set-key (kbd "“") 'scroll-down-in-place)
 
+<<<<<<< HEAD
 ;; use altgr + f to go to _beginning_ of next word
 (require 'misc)
 (global-set-key (kbd "đ") 'forward-to-word)
@@ -283,3 +284,9 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 
 ;; git-gutter
 (global-git-gutter-mode +1)
+
+;; C-Sharp mode
+(add-hook 'csharp-mode-hook
+  (lambda ()
+    (setq indent-tabs-mode nil)
+    (setq tab-width 2)))
