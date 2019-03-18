@@ -22,7 +22,7 @@
                 glsl-mode multiple-cursors zenburn-theme smooth-scrolling
                 popwin org nyan-mode nlinum-relative lua-mode linum-relative
                 helm haskell-mode gruber-darker-theme go-mode expand-region
-                cyberpunk-theme beacon anzu ac-alchemist)))
+                cyberpunk-theme beacon anzu ac-alchemist git-gutter)))
  '(show-paren-mode t)
  '(show-trailing-whitespace t))
 (custom-set-faces
