@@ -314,3 +314,12 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
         "   "
         mode-line-misc-info
         mode-line-end-spaces))
+
+;; compilation
+(global-set-key (kbd "C-x <C-i>") 'compile)
+
+;; compile python
+(add-hook 'python-mode-hook
+          (lambda()
+            (set (make-local-variable 'compile-command)
+                 (concat "python3 " buffer-file-name))))
