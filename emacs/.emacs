@@ -143,9 +143,9 @@
 (setq helm-split-window-preferred-function 'ignore)
 
 ;; nyan cat
-(nyan-mode)
-(nyan-start-animation)
-(nyan-toggle-wavy-trail)
+;; (nyan-mode nil)
+;; (nyan-start-animation)
+;; (nyan-toggle-wavy-trail)
 
 ;; beacon (light on marker when scrolling)
 (beacon-mode 1)
@@ -296,3 +296,6 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 
 ;; zoom
 (zoom-mode 1)
+
+;; persp-mode
+(persp-mode 1)
