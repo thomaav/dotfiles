@@ -15,6 +15,9 @@
  ;; If there is more than one, they won't work right.
  '(ansi-color-names-vector
    ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
+ '(custom-safe-themes
+   (quote
+    ("a22f40b63f9bc0a69ebc8ba4fbc6b452a4e3f84b80590ba0a92b4ff599e53ad0" default)))
  '(inhibit-startup-screen t)
  '(package-selected-packages
    (quote
@@ -22,7 +25,7 @@
                 glsl-mode multiple-cursors zenburn-theme smooth-scrolling
                 popwin org nyan-mode nlinum-relative lua-mode linum-relative
                 helm haskell-mode gruber-darker-theme go-mode expand-region
-                cyberpunk-theme beacon anzu ac-alchemist git-gutter)))
+                cyberpunk-theme beacon anzu ac-alchemist git-gutter gruvbox-theme)))
  '(show-paren-mode t)
  '(show-trailing-whitespace t))
 (custom-set-faces
@@ -38,7 +41,7 @@
       '(cyberpunk-theme projectile helm-projectile popwin
                         nyan-mode nlinum-relative beacon smooth-scrolling
                         expand-region multiple-cursors org-tree-slide ivy
-                        swiper counsel flycheck))
+                        swiper counsel flycheck gruvbox-theme))
 
 ;; activate all the packages (in particular autoloads)
 (package-initialize)
@@ -92,7 +95,7 @@
 (global-set-key (kbd "M-,") (kbd "C-x r j r"))
 
 ;; load pyberpunk theme
-(load-theme 'cyberpunk t)
+(load-theme 'gruvbox-dark-hard t)
 
 ;; c++ mode
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
