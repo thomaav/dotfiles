@@ -25,7 +25,8 @@
                 glsl-mode multiple-cursors zenburn-theme smooth-scrolling
                 popwin org nyan-mode nlinum-relative lua-mode linum-relative
                 helm haskell-mode gruber-darker-theme go-mode expand-region
-                cyberpunk-theme beacon anzu ac-alchemist git-gutter gruvbox-theme)))
+                cyberpunk-theme beacon anzu ac-alchemist git-gutter gruvbox-theme
+		zoom)))
  '(show-paren-mode t)
  '(show-trailing-whitespace t))
 (custom-set-faces
@@ -292,3 +293,6 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
   (lambda ()
     (setq indent-tabs-mode nil)
     (setq tab-width 2)))
+
+;; zoom
+(zoom-mode 1)
