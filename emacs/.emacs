@@ -323,3 +323,6 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
           (lambda()
             (set (make-local-variable 'compile-command)
                  (concat "python3 " buffer-file-name))))
+
+;; timers
+(global-set-key (kbd "←") 'org-timer-set-timer)
