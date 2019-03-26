@@ -18,14 +18,14 @@
  '(custom-safe-themes
    (quote
     ("a22f40b63f9bc0a69ebc8ba4fbc6b452a4e3f84b80590ba0a92b4ff599e53ad0" default)))
- '(hl-paren-background-colors (quote ("black")))
  '(inhibit-startup-screen t)
- '(mode-line-format
-   (quote
-    ("%e" mode-line-front-space mode-line-frame-identification mode-line-buffer-identification "%l" "   " mode-line-misc-info mode-line-end-spaces)))
  '(package-selected-packages
    (quote
-    (scala-mode magit bison-mode avy helm-ag helm-projectile projectile glsl-mode multiple-cursors zenburn-theme smooth-scrolling popwin org nyan-mode nlinum-relative lua-mode linum-relative helm haskell-mode gruber-darker-theme go-mode expand-region cyberpunk-theme beacon anzu ac-alchemist git-gutter gruvbox-theme zoom)))
+    (scala-mode magit bison-mode avy helm-ag helm-projectile projectile glsl-mode
+		multiple-cursors zenburn-theme smooth-scrolling popwin org nyan-mode
+		nlinum-relative lua-mode linum-relative helm haskell-mode
+		gruber-darker-theme go-mode expand-region cyberpunk-theme beacon
+		anzu ac-alchemist git-gutter gruvbox-theme zoom highlight-parentheses)))
  '(show-paren-mode t)
  '(show-trailing-whitespace t))
 (custom-set-faces
@@ -41,7 +41,8 @@
       '(cyberpunk-theme projectile helm-projectile popwin
                         nyan-mode nlinum-relative beacon smooth-scrolling
                         expand-region multiple-cursors org-tree-slide ivy
-                        swiper counsel flycheck gruvbox-theme zoom))
+                        swiper counsel flycheck gruvbox-theme zoom
+			highlight-parentheses))
 
 ;; activate all the packages (in particular autoloads)
 (package-initialize)
