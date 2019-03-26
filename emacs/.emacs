@@ -327,3 +327,8 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 
 ;; timers
 (global-set-key (kbd "←") 'org-timer-set-timer)
+
+;; drag stuff
+(drag-stuff-mode 1)
+(global-set-key (kbd "M-2") 'drag-stuff-up)
+(global-set-key (kbd "M-3") 'drag-stuff-down)
