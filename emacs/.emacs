@@ -25,7 +25,8 @@
 		multiple-cursors zenburn-theme smooth-scrolling popwin org nyan-mode
 		nlinum-relative lua-mode linum-relative helm haskell-mode
 		gruber-darker-theme go-mode expand-region cyberpunk-theme beacon
-		anzu ac-alchemist git-gutter gruvbox-theme zoom highlight-parentheses)))
+		anzu ac-alchemist git-gutter gruvbox-theme zoom highlight-parentheses
+		omnisharp)))
  '(show-paren-mode t)
  '(show-trailing-whitespace t))
 (custom-set-faces
@@ -42,7 +43,7 @@
                         nyan-mode nlinum-relative beacon smooth-scrolling
                         expand-region multiple-cursors org-tree-slide ivy
                         swiper counsel flycheck gruvbox-theme zoom
-			highlight-parentheses))
+			highlight-parentheses omnisharp))
 
 ;; activate all the packages (in particular autoloads)
 (package-initialize)
@@ -292,7 +293,27 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (add-hook 'csharp-mode-hook
   (lambda ()
     (setq indent-tabs-mode nil)
-    (setq tab-width 2)))
+    (setq tab-width 4)))
+
+(eval-after-load
+    'company
+    '(add-to-list 'company-backends 'company-omnisharp))
+
+(defun csharp-setup()
+  (omnisharp-mode)
+  (company-mode)
+  (flycheck-mode))
+
+(add-hook 'csharp-mode-hook 'csharp-setup t)
+
+;; company-mode keybindings
+(define-key company-active-map (kbd "C-n") 'company-select-next)
+(define-key company-active-map (kbd "C-p") 'company-select-previous)
+(define-key company-search-map (kbd "C-n") 'company-select-next)
+(define-key company-search-map (kbd "C-p") 'company-select-previous)
+(define-key company-search-map (kbd "C-t") 'company-search-toggle-filtering)
+
+(setq company-idle-delay 0)
 
 ;; zoom
 (zoom-mode 1)
