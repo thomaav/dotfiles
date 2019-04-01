@@ -26,7 +26,7 @@
 		nlinum-relative lua-mode linum-relative helm haskell-mode
 		gruber-darker-theme go-mode expand-region cyberpunk-theme beacon
 		anzu ac-alchemist git-gutter gruvbox-theme zoom highlight-parentheses
-		omnisharp)))
+		omnisharp company drag-stuff)))
  '(show-paren-mode t)
  '(show-trailing-whitespace t))
 (custom-set-faces
@@ -43,7 +43,7 @@
                         nyan-mode nlinum-relative beacon smooth-scrolling
                         expand-region multiple-cursors org-tree-slide ivy
                         swiper counsel flycheck gruvbox-theme zoom
-			highlight-parentheses omnisharp))
+			highlight-parentheses omnisharp company drag-stuff))
 
 ;; activate all the packages (in particular autoloads)
 (package-initialize)
@@ -307,11 +307,21 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (add-hook 'csharp-mode-hook 'csharp-setup t)
 
 ;; company-mode keybindings
-(define-key company-active-map (kbd "C-n") 'company-select-next)
-(define-key company-active-map (kbd "C-p") 'company-select-previous)
-(define-key company-search-map (kbd "C-n") 'company-select-next)
-(define-key company-search-map (kbd "C-p") 'company-select-previous)
-(define-key company-search-map (kbd "C-t") 'company-search-toggle-filtering)
+(eval-after-load
+    'company
+    '(define-key company-active-map (kbd "C-n") 'company-select-next))
+(eval-after-load
+    'company
+    '(define-key company-active-map (kbd "C-p") 'company-select-previous))
+(eval-after-load
+    'company
+    '(define-key company-search-map (kbd "C-n") 'company-select-next))
+(eval-after-load
+    'company
+    '(define-key company-search-map (kbd "C-p") 'company-select-previous))
+(eval-after-load
+    'company
+    '(define-key company-search-map (kbd "C-t") 'company-search-toggle-filtering))
 
 (setq company-idle-delay 0)
 
