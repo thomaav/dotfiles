@@ -238,6 +238,9 @@
 (setq org-latex-minted-options '(("breaklines" "true")
                                  ("breakanywhere" "true")))
 
+;; caption
+(add-to-list 'org-latex-packages-alist '("" "caption" t))
+
 ;; ask to auto fill lines on text files
 (add-hook 'org-mode-hook
 	  (lambda ()
