@@ -23,10 +23,10 @@
    (quote
     (scala-mode magit bison-mode avy helm-ag helm-projectile projectile glsl-mode
 		multiple-cursors zenburn-theme smooth-scrolling popwin org nyan-mode
-		nlinum-relative lua-mode linum-relative helm haskell-mode
-		gruber-darker-theme go-mode expand-region cyberpunk-theme beacon
-		anzu ac-alchemist git-gutter gruvbox-theme zoom highlight-parentheses
-		omnisharp company drag-stuff)))
+		lua-mode helm haskell-mode gruber-darker-theme go-mode
+		expand-region cyberpunk-theme beacon anzu ac-alchemist
+		git-gutter gruvbox-theme zoom highlight-parentheses
+		omnisharp company drag-stuff persp-mode)))
  '(show-paren-mode t)
  '(show-trailing-whitespace t))
 (custom-set-faces
@@ -40,10 +40,11 @@
 ;; installer
 (setq package-list
       '(cyberpunk-theme projectile helm-projectile popwin
-                        nyan-mode nlinum-relative beacon smooth-scrolling
-                        expand-region multiple-cursors org-tree-slide ivy
-                        swiper counsel flycheck gruvbox-theme zoom
-			highlight-parentheses omnisharp company drag-stuff))
+                        nyan-mode beacon smooth-scrolling
+                        expand-region multiple-cursors org-tree-slide
+                        ivy swiper counsel flycheck gruvbox-theme zoom
+                        highlight-parentheses omnisharp company
+                        drag-stuff git-gutter persp-mode avy))
 
 ;; activate all the packages (in particular autoloads)
 (package-initialize)
@@ -332,6 +333,7 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (zoom-mode 1)
 
 ;; persp-mode
+(setq persp-keymap-prefix (kbd "C-x x"))
 (persp-mode 1)
 
 ;; parentheses highlight
@@ -366,3 +368,6 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (drag-stuff-mode 1)
 (global-set-key (kbd "M-2") 'drag-stuff-up)
 (global-set-key (kbd "M-3") 'drag-stuff-down)
+
+;; i really hate this thing
+(setq ring-bell-function 'ignore)
