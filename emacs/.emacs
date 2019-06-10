@@ -21,12 +21,7 @@
  '(inhibit-startup-screen t)
  '(package-selected-packages
    (quote
-    (scala-mode magit bison-mode avy helm-ag helm-projectile projectile glsl-mode
-		multiple-cursors zenburn-theme smooth-scrolling popwin org nyan-mode
-		lua-mode helm haskell-mode gruber-darker-theme go-mode
-		expand-region cyberpunk-theme beacon anzu ac-alchemist
-		git-gutter gruvbox-theme zoom highlight-parentheses
-		omnisharp company drag-stuff persp-mode)))
+    (company-ycmd ycmd scala-mode magit bison-mode avy helm-ag helm-projectile projectile glsl-mode multiple-cursors zenburn-theme smooth-scrolling popwin org nyan-mode lua-mode helm haskell-mode gruber-darker-theme go-mode expand-region cyberpunk-theme beacon anzu ac-alchemist git-gutter gruvbox-theme zoom highlight-parentheses omnisharp company drag-stuff persp-mode)))
  '(show-paren-mode t)
  '(show-trailing-whitespace t))
 (custom-set-faces
@@ -44,7 +39,8 @@
                         expand-region multiple-cursors org-tree-slide
                         ivy swiper counsel flycheck gruvbox-theme zoom
                         highlight-parentheses omnisharp company
-                        drag-stuff git-gutter persp-mode avy))
+                        drag-stuff git-gutter persp-mode avy ycmd
+                        company-ycmd))
 
 ;; activate all the packages (in particular autoloads)
 (package-initialize)
@@ -371,3 +367,12 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 
 ;; i really hate this thing
 (setq ring-bell-function 'ignore)
+
+;; ycmd
+(require 'ycmd)
+(add-hook 'c++-mode-hook #'ycmd-mode)
+(set-variable 'ycmd-server-command (list "python3" (file-truename "~/ycmd/ycmd")))
+(set-variable 'ycmd-global-config (expand-file-name "~/ycmd/.ycm_extra_conf.py"))
+
+(require 'company-ycmd)
+(company-ycmd-setup)
