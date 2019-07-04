@@ -21,7 +21,7 @@
  '(inhibit-startup-screen t)
  '(package-selected-packages
    (quote
-    (company-ycmd ycmd scala-mode magit bison-mode avy helm-ag helm-projectile projectile glsl-mode multiple-cursors zenburn-theme smooth-scrolling popwin org nyan-mode lua-mode helm haskell-mode gruber-darker-theme go-mode expand-region cyberpunk-theme beacon anzu ac-alchemist git-gutter gruvbox-theme zoom highlight-parentheses omnisharp company drag-stuff persp-mode)))
+    (iregister hindent company-ycmd ycmd scala-mode magit bison-mode avy helm-ag helm-projectile projectile glsl-mode multiple-cursors zenburn-theme smooth-scrolling popwin org nyan-mode lua-mode helm haskell-mode gruber-darker-theme go-mode expand-region cyberpunk-theme beacon anzu ac-alchemist git-gutter gruvbox-theme zoom highlight-parentheses omnisharp company drag-stuff persp-mode iregister)))
  '(show-paren-mode t)
  '(show-trailing-whitespace t))
 (custom-set-faces
@@ -40,7 +40,7 @@
                         ivy swiper counsel flycheck gruvbox-theme zoom
                         highlight-parentheses omnisharp company
                         drag-stuff git-gutter persp-mode avy ycmd
-                        company-ycmd))
+                        company-ycmd iregister))
 
 ;; activate all the packages (in particular autoloads)
 (package-initialize)
@@ -87,11 +87,6 @@
 ;; keybind commenting/uncommenting region
 (global-set-key (kbd "M-c") 'comment-region)
 (global-set-key (kbd "C-x M-c") 'uncomment-region)
-
-;; change keybindings for position registers
-;; C-, for make marker, M-x to go back to marker (simple)
-(global-set-key (kbd "C-,") (kbd "C-x r SPC r"))
-(global-set-key (kbd "M-,") (kbd "C-x r j r"))
 
 ;; load pyberpunk theme
 (load-theme 'gruvbox-dark-hard t)
@@ -376,3 +371,18 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 
 (require 'company-ycmd)
 (company-ycmd-setup)
+
+;; hindent
+(require 'hindent)
+(add-hook 'haskell-mode-hook #'hindent-mode)
+
+;; jump between registers!
+(require 'iregister)
+
+;; change keybindings for position registers
+;; C-, for make marker, M-x to go back to marker (simple)
+;; (global-set-key (kbd "C-,") (kbd "C-x r SPC r"))
+;; (global-set-key (kbd "M-,") (kbd "C-x r j r"))
+
+(global-set-key (kbd "C-,") 'iregister-point-to-register)
+(global-set-key (kbd "M-,") 'iregister-jump-to-next-marker)
