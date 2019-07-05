@@ -2,10 +2,14 @@
 
 ;; add melpa for package management
 (require 'package)
-(add-to-list
- 'package-archives
- '("melpa" . "http://melpa.org/packages/")
- t)
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.org/packages/") t)
+(add-to-list 'package-archives
+             '("melpa-stable" . "http://stable.melpa.org/packages/") t)
+(add-to-list 'package-archives
+             '("marmalade" . "https://marmalade-repo.org/packages/") t)
+(add-to-list 'package-archives
+             '("gnu elpa" . "https://elpa.gnu.org/packages/") t)
 (package-initialize)
 
 (custom-set-variables
@@ -21,7 +25,7 @@
  '(inhibit-startup-screen t)
  '(package-selected-packages
    (quote
-    (iregister hindent company-ycmd ycmd scala-mode magit bison-mode avy helm-ag helm-projectile projectile glsl-mode multiple-cursors zenburn-theme smooth-scrolling popwin org nyan-mode lua-mode helm haskell-mode gruber-darker-theme go-mode expand-region cyberpunk-theme beacon anzu ac-alchemist git-gutter gruvbox-theme zoom highlight-parentheses omnisharp company drag-stuff persp-mode iregister)))
+    (hindent helm-xref lsp-ui company-lsp ccls lsp-mode company-ycmd ycmd scala-mode magit bison-mode avy helm-ag helm-projectile projectile glsl-mode multiple-cursors zenburn-theme smooth-scrolling popwin org nyan-mode lua-mode helm haskell-mode gruber-darker-theme go-mode expand-region beacon anzu ac-alchemist git-gutter gruvbox-theme zoom highlight-parentheses omnisharp company drag-stuff persp-mode bison-mode iregister hindent)))
  '(show-paren-mode t)
  '(show-trailing-whitespace t))
 (custom-set-faces
@@ -34,13 +38,13 @@
 
 ;; installer
 (setq package-list
-      '(cyberpunk-theme projectile helm-projectile popwin
-                        nyan-mode beacon smooth-scrolling
-                        expand-region multiple-cursors org-tree-slide
-                        ivy swiper counsel flycheck gruvbox-theme zoom
-                        highlight-parentheses omnisharp company
-                        drag-stuff git-gutter persp-mode avy ycmd
-                        company-ycmd iregister))
+      '(projectile helm-projectile popwin
+		   nyan-mode beacon smooth-scrolling
+		   expand-region multiple-cursors org-tree-slide
+		   ivy swiper counsel flycheck gruvbox-theme zoom
+		   highlight-parentheses omnisharp company
+		   drag-stuff git-gutter persp-mode avy ycmd
+		   company-ycmd bison-mode iregister hindent))
 
 ;; activate all the packages (in particular autoloads)
 (package-initialize)
@@ -364,13 +368,13 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (setq ring-bell-function 'ignore)
 
 ;; ycmd
-(require 'ycmd)
-(add-hook 'c++-mode-hook #'ycmd-mode)
-(set-variable 'ycmd-server-command (list "python3" (file-truename "~/ycmd/ycmd")))
-(set-variable 'ycmd-global-config (expand-file-name "~/ycmd/.ycm_extra_conf.py"))
+;; (require 'ycmd)
+;; (add-hook 'c++-mode-hook #'ycmd-mode)
+;; (set-variable 'ycmd-server-command (list "python" (file-truename "/srv/taven/ycmd/ycmd")))
+;; (set-variable 'ycmd-global-config (expand-file-name "/srv/taven/ycmd/.ycm_extra_conf.py"))
 
-(require 'company-ycmd)
-(company-ycmd-setup)
+;; (require 'company-ycmd)
+;; (company-ycmd-setup)
 
 ;; hindent
 (require 'hindent)
@@ -379,10 +383,56 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 ;; jump between registers!
 (require 'iregister)
 
-;; change keybindings for position registers
-;; C-, for make marker, M-x to go back to marker (simple)
-;; (global-set-key (kbd "C-,") (kbd "C-x r SPC r"))
-;; (global-set-key (kbd "M-,") (kbd "C-x r j r"))
-
 (global-set-key (kbd "C-,") 'iregister-point-to-register)
 (global-set-key (kbd "M-,") 'iregister-jump-to-next-marker)
+
+;; bison-mode
+(add-to-list 'auto-mode-alist '("\\.yy\\'" . bison-mode))
+
+;; column-width
+(setq-default fill-column 80)
+
+;; lsp
+(require 'lsp)
+(add-hook 'c-mode-common-hook #'lsp)
+
+(require 'ccls)
+(setq ccls-executable "/srv/taven/ccls/Release/ccls")
+(setq ccls-extra-init-params '(:index (:comments 0)))
+
+; https://github.com/emacs-lsp/lsp-mode/issues/466#issuecomment-438143682
+(add-to-list 'xref-prompt-for-identifier 'xref-find-references t)
+
+; (setq lsp-clients-clangd-executable "clangd-9")
+; (setq lsp-clients-clangd-args '("--background-index" "--clang-tidy" "-j=8"))
+
+(require 'lsp-ui)
+(add-hook 'lsp-mode-hook 'lsp-ui-mode)
+
+(setq lsp-auto-guess-root t)
+
+; This is too fancy. Disable.
+(setq lsp-ui-sideline-enable t
+     lsp-ui-sideline-show-symbol nil
+     lsp-ui-sideline-show-hover nil)
+(setq lsp-ui-doc-enable nil)
+
+; Only show the signature in the echo area. Not the full documentation.
+(setq lsp-eldoc-render-all nil)
+
+; Enable completion. Let the server handle caching.
+(require 'company-lsp)
+(setq company-lsp-cache-candidates nil)
+
+(setq lsp-enable-snippet nil)
+
+;; ycmd go-to
+(global-set-key (kbd "C-t") 'lsp-find-definition)
+(global-set-key (kbd "C-M-t") 'lsp-find-references)
+
+;; projectile native
+(setq projectile-indexing-method 'alien)
+
+;; use helm for xrefs when there are multiple.
+(require 'helm-xref)
+(setq xref-show-xrefs-function 'helm-xref-show-xrefs)
