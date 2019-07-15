@@ -383,8 +383,13 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 ;; jump between registers!
 (require 'iregister)
 
+(defun iregister-last-marker()
+  (interactive)
+  (setq iregister-current-marker-register 0)
+  (iregister-jump-to-previous-marker))
+
 (global-set-key (kbd "C-,") 'iregister-point-to-register)
-(global-set-key (kbd "M-,") 'iregister-jump-to-next-marker)
+(global-set-key (kbd "M-,") 'iregister-last-marker)
 
 ;; bison-mode
 (add-to-list 'auto-mode-alist '("\\.yy\\'" . bison-mode))
