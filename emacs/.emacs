@@ -44,7 +44,8 @@
 		   ivy swiper counsel flycheck gruvbox-theme zoom
 		   highlight-parentheses omnisharp company
 		   drag-stuff git-gutter persp-mode avy ycmd
-		   company-ycmd bison-mode iregister hindent))
+		   company-ycmd bison-mode iregister hindent
+		   rainbow-delimiters))
 
 ;; activate all the packages (in particular autoloads)
 (package-initialize)
@@ -441,3 +442,7 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 ;; use helm for xrefs when there are multiple.
 (require 'helm-xref)
 (setq xref-show-xrefs-function 'helm-xref-show-xrefs)
+
+;; rainbow-delim
+(require 'rainbow-delimiters)
+(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
