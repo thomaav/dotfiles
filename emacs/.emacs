@@ -189,7 +189,6 @@
 (global-set-key (kbd "€") (kbd "["))
 (global-set-key (kbd "®") (kbd "]"))
 (global-set-key (kbd "å") (kbd "/"))
-(global-set-key (kbd "C-|") (kbd "λ"))
 (global-set-key (kbd "ð") 'undo)
 (global-set-key (kbd "ª") 'counsel-ag)
 (global-set-key (kbd "C-s") 'swiper)
@@ -447,9 +446,10 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (require 'rainbow-delimiters)
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
-;;
+;; highlight indentation
 (require 'highlight-indent-guides)
-(add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
 
 (setq highlight-indent-guides-character ?\|)
 (setq highlight-indent-guides-method 'character)
+
+(global-set-key (kbd "C-|") 'highlight-indent-guides-mode)
