@@ -1,6 +1,6 @@
 (define-coding-system-alias 'utf8 'utf-8)
 
-;; add melpa for package management
+;; Package repositories.
 (require 'package)
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.org/packages/") t)
@@ -11,98 +11,69 @@
 (add-to-list 'package-archives
              '("gnu elpa" . "https://elpa.gnu.org/packages/") t)
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector
-   ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
- '(custom-safe-themes
-   (quote
-    ("a22f40b63f9bc0a69ebc8ba4fbc6b452a4e3f84b80590ba0a92b4ff599e53ad0" default)))
- '(inhibit-startup-screen t)
- '(package-selected-packages
-   (quote
-    (buffer-move hindent helm-xref lsp-ui company-lsp ccls lsp-mode company-ycmd ycmd scala-mode magit bison-mode avy helm-ag helm-projectile projectile glsl-mode multiple-cursors zenburn-theme smooth-scrolling popwin org nyan-mode lua-mode helm haskell-mode gruber-darker-theme go-mode expand-region beacon anzu ac-alchemist git-gutter gruvbox-theme zoom highlight-parentheses omnisharp company drag-stuff persp-mode bison-mode iregister hindent)))
- '(show-paren-mode t)
- '(show-trailing-whitespace t))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:family "Consolas" :foundry "outline" :slant normal :weight normal :height 130 :width normal)))))
+;; Font settings.
 (set-default-font "Consolas")
+(set-face-attribute 'default nil :family "Consolas")
+(set-face-attribute 'default nil :foundry "outline")
+(set-face-attribute 'default nil :height 130)
 
 ;; installer
 (setq package-list
-      '(projectile helm-projectile popwin
-		   nyan-mode beacon smooth-scrolling
-		   expand-region multiple-cursors org-tree-slide
-		   ivy swiper counsel flycheck gruvbox-theme zoom
-		   highlight-parentheses omnisharp company
-		   drag-stuff git-gutter persp-mode avy ycmd
-		   company-ycmd bison-mode iregister hindent
-		   rainbow-delimiters highlight-indent-guides
-		   lsp-mode lsp-ui company-lsp helm-xref ccls
-		   buffer-move))
+      '(projectile helm-projectile popwin beacon smooth-scrolling expand-region
+		   multiple-cursors ivy swiper counsel flycheck gruvbox-theme
+		   zoom highlight-parentheses omnisharp company drag-stuff
+		   git-gutter persp-mode avy ycmd company-ycmd bison-mode
+		   iregister hindent rainbow-delimiters highlight-indent-guides
+		   lsp-mode lsp-ui company-lsp helm-xref ccls buffer-move))
 
-;; activate all the packages (in particular autoloads)
+;; Activate all the packages.
 (package-initialize)
-
-;; fetch the list of packages available
 (unless package-archive-contents
   (package-refresh-contents))
 
-;; install the missing packages
+;; Automatically install missing packages
 (dolist (package package-list)
   (unless (package-installed-p package)
     (package-install package)))
 
-;; M-n, M-p for next/previous window
+;; M-n, M-p for next/previous window.
 (defun prev-window ()
   (interactive)
   (other-window -1))
 (define-key global-map (kbd "M-n") 'other-window)
 (define-key global-map (kbd "M-p") 'prev-window)
 
-;; electric pair mode, {} both at once
+;; Automatically create pairs of brackets.
 (electric-pair-mode 1)
 
-;; dont scroll out of the window horizontally
+;; Overflow into the next line instead of scrolling horizontally.
 (put 'scroll-left 'disabled nil)
 
-;; remove tool bar at the top
+;; Remove UI clutter.
 (tool-bar-mode -1)
-
-;; remove menu-bar
 (menu-bar-mode -1)
-
-;; remove scroll bar
 (scroll-bar-mode -1)
 
-;; backup to somewhere else, and not cwd with *~
+;; Backup to Emacs_Backup in $HOME.
 (setq backup-directory-alist '(("." . "~/Emacs_Backup")))
 (setq auto-save-file-name-transforms
       `((".*" ,"~/Emacs_Backup" t)))
 
-;; camelcase mode whenever
+;; Forward-word should respect camel casing.
 (add-hook 'prog-mode-hook 'subword-mode)
 
-;; keybind commenting/uncommenting region
+;; Key binds for [un]commenting regions.
 (global-set-key (kbd "M-c") 'comment-region)
 (global-set-key (kbd "C-x M-c") 'uncomment-region)
 
-;; load pyberpunk theme
+;; Color theme.
 (load-theme 'gruvbox-dark-hard t)
 
-;; c++ mode
+;; C/C++ stuff. Access labels like public/private/protected.
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
-;; offset for labels in class
 (c-set-offset 'access-label '-)
 
-;; indentation for C, c++, glsl
+;; Indentation for C/C++/GLSL.
 (defvaralias 'c-basic-offset 'tab-width)
 (defun c-mode-indentation ()
   (setq-default tab-width 4)
@@ -111,29 +82,31 @@
 (add-hook 'c++-mode-hook 'c-mode-indentation)
 (add-hook 'glsl-mode-hook 'c-mode-indentation)
 
-;; bind avy-goto-char
-(define-key input-decode-map [?\C-i] [C-i]) ;; only works in gui mode
+;; avy-goto-char key binding. Rebind TAB properly as it does C-i by
+;; default. avy-goto-char only works in GUI mode.
+(define-key input-decode-map [?\C-i] [C-i])
 (global-set-key (kbd "<C-i>") 'avy-goto-char)
 (global-set-key (kbd "TAB") #'indent-for-tab-command)
 
-;; projectile
+;; Project handling.
 (require 'projectile)
 (projectile-mode 1)
 (require 'helm-projectile)
 (helm-projectile-on)
 
-;; helm
+;; Helm stuff. Selection narrowing.
 (require 'helm-config)
 (helm-mode 1)
-;; (helm-autoresize-mode t) don't resize for now
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
 (global-set-key (kbd "C-x b") 'helm-mini)
 (global-set-key (kbd "M-x") 'helm-M-x)
+
+;; Projectile stuff we use helm for.
 (global-set-key (kbd "C-c C-p") 'helm-projectile-switch-project)
 (global-set-key (kbd "C-x C-f") 'helm-projectile-find-file)
 (global-set-key (kbd "C-x M-f") 'helm-find-files)
 
-;; popwin
+;; Use popwin for pop-up buffers, as it is not particularly intruding.
 (require 'popwin)
 (popwin-mode 1)
 (setq display-buffer-function 'popwin:display-buffer)
@@ -141,29 +114,25 @@
 (push '("^\*helm-.+\*$" :regexp t) popwin:special-display-config)
 (setq helm-split-window-preferred-function 'ignore)
 
-;; nyan cat
-;; (nyan-mode nil)
-;; (nyan-start-animation)
-;; (nyan-toggle-wavy-trail)
-
-;; beacon (light on marker when scrolling)
+;; Display a flash of light at the cursor when scrolling.
 (beacon-mode 1)
 
+;; Scroll window five lines from the bottom instead.
 (require 'smooth-scrolling)
 (smooth-scrolling-mode 1)
 
-;; expand region - must have
+;; C-q will expand a region for marking, specifically regions within brackets.
 (require 'expand-region)
 (global-set-key (kbd "C-q") 'er/expand-region)
 (put 'upcase-region 'disabled nil)
 
-;; multiple cursors
+;; Emacs Rocks!
 (require 'multiple-cursors)
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 (global-set-key (kbd "C-j") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-S-j") 'mc/mark-previous-like-this)
 
-;; whitespace functions
+;; Move to next/previous blank line.
 (defun previous-blank-line ()
   "Moves to the previous line containing nothing but whitespace."
   (interactive)
@@ -178,11 +147,11 @@
   (forward-line -1)
   )
 
-;; fast forward rewind cursor
+;; Replace moving between paragraphs with moving between blank lines.
 (global-set-key (kbd "M-e") 'next-blank-line)
 (global-set-key (kbd "M-a") 'previous-blank-line)
 
-;; rebinding
+;; Misc. rebindings. This uses AltGr combinations to free keys.
 (global-set-key (kbd "ø") (kbd "{"))
 (global-set-key (kbd "æ") (kbd "}"))
 (global-set-key (kbd "Ø") (kbd "("))
@@ -197,7 +166,7 @@
 (global-set-key (kbd "@") 'kill-whole-line)
 (global-set-key (kbd "C-ø") 'subword-backward-kill)
 
-;; Exporting latex / pdflatex
+;; Exporting LaTeX stuff.
 (require 'ox-latex)
 (unless (boundp 'org-latex-classes)
   (setq org-latex-classes nil))
@@ -218,14 +187,14 @@
 (eval-after-load "org"
   '(progn
      ;; .txt files aren't in the list initially, but in case that changes
-     ;; in a future version of org, use if to avoid errors
+     ;; in a future version of org, use if to avoid errors.
      (if (assoc "\\.txt\\'" org-file-apps)
          (setcdr (assoc "\\.txt\\'" org-file-apps) "notepad.exe %s")
        (add-to-list 'org-file-apps '("\\.txt\\'" . "notepad.exe %s") t))
-     ;; Change .pdf association directly within the alist
+     ;; Change .pdf association directly within the alist.
      (setcdr (assoc "\\.pdf\\'" org-file-apps) "evince %s")))
 
-;; minted color source
+;; Minted color sources in LaTeX exports.
 (setq org-latex-listings 'minted
       org-latex-packages-alist '(("" "minted"))
       org-latex-pdf-process
@@ -235,19 +204,19 @@
 (setq org-latex-minted-options '(("breaklines" "true")
                                  ("breakanywhere" "true")))
 
-;; caption
+;; LaTeX packages.
 (add-to-list 'org-latex-packages-alist '("" "caption" t))
 
-;; ask to auto fill lines on text files
+;; We should ask for auto-filling lines in text modes.
 (add-hook 'org-mode-hook
 	  (lambda ()
 	    (when (y-or-n-p "Auto Fill mode? ")
 	      (turn-on-auto-fill))))
 
-;; ivy
+;; ivy-mode. I think this is mostly used for counsel/swiper.
 (ivy-mode 1)
 
-;; scroll in place
+;; Key bind scrolling up and down _in place_ without moving the cursor.
 (defun scroll-in-place (scroll-up)
   "Scroll window up (or down) without moving point (if possible).
 
@@ -266,13 +235,11 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
                 (setq temporary-goal-column col))
           (setq this-command 'next-line))))
 
-;;;; ------------------------------------------------------------------------
 (defun scroll-up-in-place ()
   "Scroll window up without moving point (if possible)."
   (interactive)
   (scroll-in-place t))
 
-;;;; ------------------------------------------------------------------------
 (defun scroll-down-in-place ()
   "Scroll window up without moving point (if possible)."
   (interactive)
@@ -281,15 +248,15 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (global-set-key (kbd "π") 'scroll-up-in-place)
 (global-set-key (kbd "“") 'scroll-down-in-place)
 
-;; use altgr + f to go to _beginning_ of next word
+;; Use AltGr + f/b to go to beginning/end of next word in a Vim-like manner.
 (require 'misc)
 (global-set-key (kbd "đ") 'forward-to-word)
 (global-set-key (kbd "”") 'backward-to-word)
 
-;; git-gutter
+;; Show git diff of current file.
 (global-git-gutter-mode +1)
 
-;; C-Sharp mode
+;; C-Sharp mode.
 (add-hook 'csharp-mode-hook
   (lambda ()
     (setq indent-tabs-mode nil)
@@ -306,7 +273,7 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 
 (add-hook 'csharp-mode-hook 'csharp-setup t)
 
-;; company-mode keybindings
+;; General keybindings used for company mode.
 (eval-after-load
     'company
     '(define-key company-active-map (kbd "C-n") 'company-select-next))
@@ -323,21 +290,17 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
     'company
     '(define-key company-search-map (kbd "C-t") 'company-search-toggle-filtering))
 
+;; Oh boy..
 (setq company-idle-delay 0)
 
-;; zoom
+;; Zoom mode becomes noticeable the size of windows gets really small.
 (zoom-mode 1)
 
-;; persp-mode
+;; Workspaces.
 (setq persp-keymap-prefix (kbd "C-x x"))
 (persp-mode 1)
 
-;; parentheses highlight
-(require 'highlight-parentheses)
-(global-highlight-parentheses-mode 1)
-(setq-default hl-paren-background-colors '("wheat"))
-
-;; mode-line-format
+;; Format of the mode-line. Pretty minimalistic for now.
 (setq-default mode-line-format
       '("%e"
         "%&"
@@ -348,42 +311,34 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
         mode-line-misc-info
         mode-line-end-spaces))
 
-;; compilation
+;; Compilation key binding. Should use multi-compile in the future.
 (global-set-key (kbd "C-x <C-i>") 'compile)
 
-;; compile python
+;; Run a python file by its compilation command.
 (add-hook 'python-mode-hook
           (lambda()
             (set (make-local-variable 'compile-command)
                  (concat "python3 " buffer-file-name))))
 
-;; timers
-(global-set-key (kbd "←") 'org-timer-set-timer)
-
-;; drag stuff
+;; Mark stuff such that they can be "dragged".
 (drag-stuff-mode 1)
 (global-set-key (kbd "M-2") 'drag-stuff-up)
 (global-set-key (kbd "M-3") 'drag-stuff-down)
 
-;; i really hate this thing
+;; Shut the fuck up.
 (setq ring-bell-function 'ignore)
 
-;; ycmd
-;; (require 'ycmd)
-;; (add-hook 'c++-mode-hook #'ycmd-mode)
-;; (set-variable 'ycmd-server-command (list "python" (file-truename "/srv/taven/ycmd/ycmd")))
-;; (set-variable 'ycmd-global-config (expand-file-name "/srv/taven/ycmd/.ycm_extra_conf.py"))
-
-;; (require 'company-ycmd)
-;; (company-ycmd-setup)
-
-;; hindent
+;; Automatic haskell indentation.
 (require 'hindent)
 (add-hook 'haskell-mode-hook #'hindent-mode)
-slakdjf fix hindent reformat on save 
 
+;; Run hindent when saving Haskell code.
+(defun my-hindent-save-hook ()
+  (when (eq major-mode 'haskell-mode)
+    (hindent-reformat-buffer)))
+(add-hook 'before-save-hook 'my-hindent-save-hook)
 
-;; jump between registers!
+;; Save position in registers to use like bookmarks.
 (require 'iregister)
 
 (defun iregister-last-marker()
@@ -394,16 +349,17 @@ slakdjf fix hindent reformat on save
 (global-set-key (kbd "C-,") 'iregister-point-to-register)
 (global-set-key (kbd "M-,") 'iregister-last-marker)
 
-;; bison-mode
+;; bison-mode.
 (add-to-list 'auto-mode-alist '("\\.yy\\'" . bison-mode))
 
-;; column-width
+;; column-width should (almost) always be 80.
 (setq-default fill-column 80)
 
-;; lsp
+;; LSP. Requires an actual LSP server, of course.
 (require 'lsp)
 (add-hook 'c-mode-common-hook #'lsp)
 
+;; ccls for jumping to definitions in C++.
 (require 'ccls)
 (setq ccls-executable "/srv/taven/ccls/Release/ccls")
 (setq ccls-extra-init-params '(:index (:comments 0)))
@@ -411,45 +367,42 @@ slakdjf fix hindent reformat on save
 ; https://github.com/emacs-lsp/lsp-mode/issues/466#issuecomment-438143682
 (add-to-list 'xref-prompt-for-identifier 'xref-find-references t)
 
-; (setq lsp-clients-clangd-executable "clangd-9")
-; (setq lsp-clients-clangd-args '("--background-index" "--clang-tidy" "-j=8"))
-
 (require 'lsp-ui)
 (add-hook 'lsp-mode-hook 'lsp-ui-mode)
 
 (setq lsp-auto-guess-root t)
 
-; This is too fancy. Disable.
+;; This is apparently too fancy. Disable.
 (setq lsp-ui-sideline-enable t
      lsp-ui-sideline-show-symbol nil
      lsp-ui-sideline-show-hover nil)
 (setq lsp-ui-doc-enable nil)
 
-; Only show the signature in the echo area. Not the full documentation.
+;; Only show the signature in the echo area. Not the full documentation.
 (setq lsp-eldoc-render-all nil)
 
-; Enable completion. Let the server handle caching.
+;; Enable completion. Let the server handle caching.
 (require 'company-lsp)
 (setq company-lsp-cache-candidates nil)
 
 (setq lsp-enable-snippet nil)
 
-;; ycmd go-to
+;; Key bindings for go-to with lsp-mode.
 (global-set-key (kbd "C-t") 'lsp-find-definition)
 (global-set-key (kbd "C-M-t") 'lsp-find-references)
 
-;; projectile native
+;; Don't use elisp for indexing. Matters for very big projects.
 (setq projectile-indexing-method 'alien)
 
-;; use helm for xrefs when there are multiple.
+;; We want xrefs in a nice popwin, not replacing another buffer.
 (require 'helm-xref)
 (setq xref-show-xrefs-function 'helm-xref-show-xrefs)
 
-;; rainbow-delim
+;; Color matching brackets to match them.
 (require 'rainbow-delimiters)
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
-;; highlight indentation
+;; Highlight indentation with a toggle.
 (require 'highlight-indent-guides)
 
 (setq highlight-indent-guides-character ?\|)
@@ -462,3 +415,12 @@ slakdjf fix hindent reformat on save
 (global-set-key (kbd "<C-S-down>")   'buf-move-down)
 (global-set-key (kbd "<C-S-left>")   'buf-move-left)
 (global-set-key (kbd "<C-S-right>")  'buf-move-right)
+
+;; Inhibit startup screen.
+(setq inhibit-startup-screen t)
+
+;; Marks matching pairs of parentheses.
+(setq show-paren-mode t)
+
+;; Red trailing whitspace.
+(setq show-trailing-whitespace t)
