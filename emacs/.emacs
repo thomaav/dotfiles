@@ -45,7 +45,7 @@
 		   highlight-parentheses omnisharp company
 		   drag-stuff git-gutter persp-mode avy ycmd
 		   company-ycmd bison-mode iregister hindent
-		   rainbow-delimiters))
+		   rainbow-delimiters highlight-indent-guides))
 
 ;; activate all the packages (in particular autoloads)
 (package-initialize)
@@ -446,3 +446,10 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 ;; rainbow-delim
 (require 'rainbow-delimiters)
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+
+;;
+(require 'highlight-indent-guides)
+(add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+
+(setq highlight-indent-guides-character ?\|)
+(setq highlight-indent-guides-method 'character)
