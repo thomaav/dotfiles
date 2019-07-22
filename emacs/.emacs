@@ -10,7 +10,6 @@
              '("marmalade" . "https://marmalade-repo.org/packages/") t)
 (add-to-list 'package-archives
              '("gnu elpa" . "https://elpa.gnu.org/packages/") t)
-(package-initialize)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -25,7 +24,7 @@
  '(inhibit-startup-screen t)
  '(package-selected-packages
    (quote
-    (hindent helm-xref lsp-ui company-lsp ccls lsp-mode company-ycmd ycmd scala-mode magit bison-mode avy helm-ag helm-projectile projectile glsl-mode multiple-cursors zenburn-theme smooth-scrolling popwin org nyan-mode lua-mode helm haskell-mode gruber-darker-theme go-mode expand-region beacon anzu ac-alchemist git-gutter gruvbox-theme zoom highlight-parentheses omnisharp company drag-stuff persp-mode bison-mode iregister hindent)))
+    (buffer-move hindent helm-xref lsp-ui company-lsp ccls lsp-mode company-ycmd ycmd scala-mode magit bison-mode avy helm-ag helm-projectile projectile glsl-mode multiple-cursors zenburn-theme smooth-scrolling popwin org nyan-mode lua-mode helm haskell-mode gruber-darker-theme go-mode expand-region beacon anzu ac-alchemist git-gutter gruvbox-theme zoom highlight-parentheses omnisharp company drag-stuff persp-mode bison-mode iregister hindent)))
  '(show-paren-mode t)
  '(show-trailing-whitespace t))
 (custom-set-faces
@@ -46,7 +45,8 @@
 		   drag-stuff git-gutter persp-mode avy ycmd
 		   company-ycmd bison-mode iregister hindent
 		   rainbow-delimiters highlight-indent-guides
-		   lsp-mode lsp-ui company-lsp helm-xref ccls))
+		   lsp-mode lsp-ui company-lsp helm-xref ccls
+		   buffer-move))
 
 ;; activate all the packages (in particular autoloads)
 (package-initialize)
@@ -380,6 +380,8 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 ;; hindent
 (require 'hindent)
 (add-hook 'haskell-mode-hook #'hindent-mode)
+slakdjf fix hindent reformat on save 
+
 
 ;; jump between registers!
 (require 'iregister)
@@ -454,3 +456,9 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (setq highlight-indent-guides-method 'character)
 
 (global-set-key (kbd "C-|") 'highlight-indent-guides-mode)
+
+;; Move buffers with key bindings.
+(global-set-key (kbd "<C-S-up>")     'buf-move-up)
+(global-set-key (kbd "<C-S-down>")   'buf-move-down)
+(global-set-key (kbd "<C-S-left>")   'buf-move-left)
+(global-set-key (kbd "<C-S-right>")  'buf-move-right)
