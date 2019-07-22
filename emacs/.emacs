@@ -45,7 +45,8 @@
 		   highlight-parentheses omnisharp company
 		   drag-stuff git-gutter persp-mode avy ycmd
 		   company-ycmd bison-mode iregister hindent
-		   rainbow-delimiters highlight-indent-guides))
+		   rainbow-delimiters highlight-indent-guides
+		   lsp-mode lsp-ui company-lsp helm-xref ccls))
 
 ;; activate all the packages (in particular autoloads)
 (package-initialize)
