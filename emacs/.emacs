@@ -417,10 +417,10 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (global-set-key (kbd "<C-S-right>")  'buf-move-right)
 
 ;; Inhibit startup screen.
-(setq inhibit-startup-screen t)
+(setq-default inhibit-startup-screen t)
 
 ;; Marks matching pairs of parentheses.
-(setq show-paren-mode t)
+(setq-default show-paren-mode t)
 
 ;; Red trailing whitspace.
-(setq show-trailing-whitespace t)
+(setq-default show-trailing-whitespace t)
