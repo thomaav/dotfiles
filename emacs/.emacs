@@ -441,7 +441,6 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (add-hook 'js2-mode-hook 'prettier-js-mode)
 
 ;; TeX. Semesterprosjekt.
-(require 'auctex)
 (require 'auctex-latexmk)
 
 (global-set-key (kbd "C-o")  'latex-preview-pane-mode)
@@ -450,5 +449,7 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
   (auctex-latexmk-setup)
   (magic-latex-buffer)
   (flyspell-mode))
+
 (add-hook 'TeX-mode-hook 'tex-mode-hook)
 
+(setq-default TeX-master "main")
