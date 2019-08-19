@@ -1,5 +1,8 @@
 (define-coding-system-alias 'utf8 'utf-8)
 
+;; TLS 1.3.
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+
 ;; Package repositories.
 (require 'package)
 (add-to-list 'package-archives
@@ -106,14 +109,6 @@
 (global-set-key (kbd "C-c C-p") 'helm-projectile-switch-project)
 (global-set-key (kbd "C-x C-f") 'helm-projectile-find-file)
 (global-set-key (kbd "C-x M-f") 'helm-find-files)
-
-;; Use popwin for pop-up buffers, as it is not particularly intruding.
-(require 'popwin)
-(popwin-mode 1)
-(setq display-buffer-function 'popwin:display-buffer)
-(push '("^\*helm .+\*$" :regexp t) popwin:special-display-config)
-(push '("^\*helm-.+\*$" :regexp t) popwin:special-display-config)
-(setq helm-split-window-preferred-function 'ignore)
 
 ;; Display a flash of light at the cursor when scrolling.
 (beacon-mode 1)
