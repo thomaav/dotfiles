@@ -361,7 +361,7 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 
 ;; ccls for jumping to definitions in C++.
 (require 'ccls)
-(setq ccls-executable "/srv/taven/ccls/Release/ccls")
+(setq ccls-executable "/home/thomaav/dev/ccls/Release/ccls")
 (setq ccls-extra-init-params '(:index (:comments 0)))
 
 ; https://github.com/emacs-lsp/lsp-mode/issues/466#issuecomment-438143682
@@ -386,6 +386,11 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (setq company-lsp-cache-candidates nil)
 
 (setq lsp-enable-snippet nil)
+
+;; Disable formatting. Absolute trash.
+(setq lsp-enable-on-type-formatting nil)
+(setq lsp-enable-indentation nil)
+(setq lsp-before-save-edits nil)
 
 ;; Key bindings for go-to with lsp-mode.
 (global-set-key (kbd "C-t") 'lsp-find-definition)
@@ -424,3 +429,26 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 
 ;; Red trailing whitspace.
 (setq-default show-trailing-whitespace t)
+
+;; JS.
+(defun js-mode-hook ()
+  (setq-default js-indent-level 2)
+  (setq-default indent-tabs-mode nil))
+
+(add-hook 'js-mode 'js2-mode)
+(add-hook 'js2-mode-hook 'js-mode-hook)
+(add-hook 'js2-mode-hook 'add-node-modules-path)
+(add-hook 'js2-mode-hook 'prettier-js-mode)
+
+;; TeX. Semesterprosjekt.
+(require 'auctex)
+(require 'auctex-latexmk)
+
+(global-set-key (kbd "C-o")  'latex-preview-pane-mode)
+
+(defun tex-mode-hook ()
+  (auctex-latexmk-setup)
+  (magic-latex-buffer)
+  (flyspell-mode))
+(add-hook 'TeX-mode-hook 'tex-mode-hook)
+
