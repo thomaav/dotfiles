@@ -24,7 +24,8 @@
 		   zoom highlight-parentheses omnisharp company drag-stuff
 		   git-gutter persp-mode avy ycmd company-ycmd bison-mode
 		   iregister hindent rainbow-delimiters highlight-indent-guides
-		   lsp-mode lsp-ui company-lsp helm-xref ccls buffer-move))
+		   lsp-mode lsp-ui company-lsp helm-xref ccls buffer-move
+		   auctex-latexmk latex-preview-pane))
 
 ;; Activate all the packages.
 (package-initialize)
