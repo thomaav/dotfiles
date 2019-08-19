@@ -296,9 +296,9 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 ;; Zoom mode becomes noticeable the size of windows gets really small.
 (zoom-mode 1)
 
-;; Workspaces.
-(setq persp-keymap-prefix (kbd "C-x x"))
-(persp-mode 1)
+;; Workspaces. Saves buffer for next session (which can be annoying).
+;; (setq persp-keymap-prefix (kbd "C-x x"))
+;; (persp-mode 1)
 
 ;; Format of the mode-line. Pretty minimalistic for now.
 (setq-default mode-line-format
