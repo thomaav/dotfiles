@@ -28,7 +28,7 @@
 		   git-gutter persp-mode avy ycmd company-ycmd bison-mode
 		   iregister hindent rainbow-delimiters highlight-indent-guides
 		   lsp-mode lsp-ui company-lsp helm-xref ccls buffer-move
-		   auctex-latexmk latex-preview-pane))
+		   auctex-latexmk latex-preview-pane magic-latex-buffer))
 
 ;; Activate all the packages.
 (package-initialize)
@@ -109,6 +109,14 @@
 (global-set-key (kbd "C-c C-p") 'helm-projectile-switch-project)
 (global-set-key (kbd "C-x C-f") 'helm-projectile-find-file)
 (global-set-key (kbd "C-x M-f") 'helm-find-files)
+
+;; Use popwin for pop-up buffers, as it is not particularly intruding.
+(require 'popwin)
+(popwin-mode 1)
+(setq display-buffer-function 'popwin:display-buffer)
+(push '("^\*helm .+\*$" :regexp t) popwin:special-display-config)
+(push '("^\*helm-.+\*$" :regexp t) popwin:special-display-config)
+(setq helm-split-window-preferred-function 'ignore)
 
 ;; Display a flash of light at the cursor when scrolling.
 (beacon-mode 1)
@@ -448,4 +456,4 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 
 (add-hook 'TeX-mode-hook 'tex-mode-hook)
 
-(setq-default TeX-master "main")
+(setq-default TeX-master nil)
