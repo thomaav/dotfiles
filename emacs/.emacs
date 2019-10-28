@@ -457,3 +457,13 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (add-hook 'TeX-mode-hook 'tex-mode-hook)
 
 (setq-default TeX-master nil)
+
+;; Custom macro to autofill full of current paragraph.
+(fset 'customfill
+   [?\M-x ?i ?r ?e ?g ?i ?s ?t ?e ?r ?- ?p ?o ?i ?n ?t ?- ?t ?o ?- ?r ?e ?g ?i
+   ?s ?t ?e ?r return ?\M-e ?\C- ?\M-a ?\M-q ?\M-, return])
+(defun custom-fill-hook()
+  (interactive)
+  (execute-kbd-macro (symbol-function 'customfill)))
+(global-set-key (kbd "C-M-q") 'custom-fill-hook)
+
