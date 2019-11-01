@@ -13,6 +13,14 @@ LOG = "
 .blerghspam/
 
 :0
+* ^(From).*root@gris
+.gris/
+
+:0
+* ^(To).*haskell-cafe*
+.haskell/
+
+:0
 * ^(To|CC).*kernelnewbies@kernelnewbies.org
 .kernelnewbies/
 
