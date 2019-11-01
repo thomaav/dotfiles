@@ -1,0 +1,12 @@
+[retriever]
+type = SimpleIMAPSSLRetriever
+server = outlook.office365.com
+username = <user>
+password = <password>
+
+[options]
+read_all = false
+
+[destination]
+type = MDA_external
+path = /usr/bin/procmail

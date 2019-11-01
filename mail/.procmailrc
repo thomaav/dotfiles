@@ -1,0 +1,30 @@
+PATH=/usr/local/bin:/usr/bin:/bin
+MAILDIR=$HOME/Mail		# make sure it exists!
+DEFAULT=$MAILDIR/		# optional
+LOGFILE=$HOME/.procmail-log	# recommended
+VERBOSE=on
+
+LOG = "
+"
+
+# Catch SPAM
+:0
+*^X-Spam-Flag: YES
+.blerghspam/
+
+# Hotmail. 
+
+:0
+* ^To.*avensin@hotmail.com
+.hotmail/
+
+# Gmail. 
+
+:0
+* ^To.*sonopony@gmail.com
+.gmail/
+
+# Default delivery.
+:0
+*
+$DEFAULT
