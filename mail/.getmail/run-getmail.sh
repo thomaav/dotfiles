@@ -5,4 +5,4 @@ rcfiles=""
 for file in rc-* ; do
   rcfiles="$rcfiles --rcfile $file"
 done
-exec /usr/bin/getmail $rcfiles $@
+exec /usr/bin/getmail --quiet $rcfiles $@ 2>/dev/null

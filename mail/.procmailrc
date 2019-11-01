@@ -12,19 +12,38 @@ LOG = "
 *^X-Spam-Flag: YES
 .blerghspam/
 
-# Hotmail. 
+:0
+* ^(To|CC).*kernelnewbies@kernelnewbies.org
+.kernelnewbies/
 
 :0
-* ^To.*avensin@hotmail.com
+* ^Subject.*Daily Summary
+.lwndaily/
+
+:0
+* ^(From).*Twitch*
+.twitch/
+
+:0
+* ^From.*piazza
+.piazza/
+
+:0
+* ^(To|Cc|CC).*thomaav@stud.ntnu.no
+.ntnu/
+
+:0
+* ^From.*do-not-reply@blackboard.com
+.ntnu/
+
+:0
+* ^(To|Cc|CC).*avensin@hotmail.com
 .hotmail/
 
-# Gmail. 
-
 :0
-* ^To.*sonopony@gmail.com
+* ^(To|Cc|CC).*sonopony@gmail.com
 .gmail/
 
-# Default delivery.
 :0
 *
 $DEFAULT
