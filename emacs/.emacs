@@ -167,7 +167,6 @@
 (global-set-key (kbd "ª") 'counsel-ag)
 (global-set-key (kbd "C-s") 'swiper)
 (global-set-key (kbd "C-r") 'swiper)
-(global-set-key (kbd "@") 'kill-whole-line)
 (global-set-key (kbd "C-ø") 'subword-backward-kill)
 
 ;; Exporting LaTeX stuff.
