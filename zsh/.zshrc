@@ -17,8 +17,7 @@ export PATH=$PATH:/home/thomaav/Xilinx/Vivado/2016.4/bin
 
 # colors
 autoload -U colors && colors
-PS1="%{$fg[yellow]%}λ %~> %{$reset_color%}"
-LS_COLORS=$LS_COLORS:'di=0;34:fi=0;32:ln=1;33:' ; export LS_COLORS
+PS1="λ %~> "
 
 # general
 alias la='ls -lah'
