@@ -464,3 +464,7 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
   (interactive)
   (execute-kbd-macro (symbol-function 'customfill)))
 (global-set-key (kbd "C-M-q") 'custom-fill-hook)
+
+;; Python LSP.
+(require 'lsp-clients)
+(add-hook 'python-mode-hook 'lsp)
