@@ -468,3 +468,15 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 ;; Python LSP.
 (require 'lsp-clients)
 (add-hook 'python-mode-hook 'lsp)
+
+(use-package org-gcal
+	     :ensure t
+	     :config
+	     (setq org-gcal-client-id ""
+		   org-gcal-client-secret ""
+		   org-gcal-file-alist '(("" . "~/orgfiles/gcal.org"))))
+
+(setq org-agenda-files (list "~/orgfiles/gcal.org"))
+(add-hook 'org-agenda-mode-hook (lambda() (org-gcal-sync)))
+(add-hook 'org-capture-after-finalize-hook (lambda() (org-gcal-sync)))
+(global-set-key (kbd "C-c a") 'org-agenda)
