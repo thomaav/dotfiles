@@ -16,6 +16,7 @@ symlink()
 echo "Installing dotfiles.."
 
 symlink "emacs/.emacs" ".emacs"
+symlink "emacs/lisp" ".emacs.d/lisp"
 symlink "terminator/config" ".config/terminator/config"
 symlink "zsh/.zshrc" ".zshrc"
 symlink "git/.gitconfig" ".gitconfig"
