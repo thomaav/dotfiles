@@ -6,7 +6,7 @@
 	org-gcal-file-alist '(("" . "~/orgfiles/gcal.org"))))
 
 (setq org-agenda-files (list "~/orgfiles/gcal.org"))
-(setq org-agenda-files (list "~/orgfiles/todo.org"))
+(add-to-list 'org-agenda-files "~/orgfiles/todo.org")
 (add-hook 'org-agenda-mode-hook (lambda() (org-gcal-sync)))
 (add-hook 'org-capture-after-finalize-hook (lambda() (org-gcal-sync)))
 
