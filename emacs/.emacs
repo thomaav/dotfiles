@@ -36,6 +36,9 @@
 (set-face-attribute 'default nil :foundry "outline")
 (set-face-attribute 'default nil :height 130)
 
+;; Put custom settings in its own file.
+(setq custom-file (concat user-emacs-directory "custom.el"))
+
 ;; M-n, M-p for next/previous window.
 (defun prev-window ()
   (interactive)
