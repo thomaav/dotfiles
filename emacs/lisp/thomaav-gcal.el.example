@@ -3,10 +3,10 @@
   :config
   (setq org-gcal-client-id ""
 	org-gcal-client-secret ""
-	org-gcal-file-alist '(("" . "~/orgfiles/gcal.org"))))
+	org-gcal-file-alist '(("" . "~/orgfiles/drive/gcal.org"))))
 
-(setq org-agenda-files (list "~/orgfiles/gcal.org"))
-(add-to-list 'org-agenda-files "~/orgfiles/todo.org")
+(setq org-agenda-files (list "~/orgfiles/drive/gcal.org"))
+(add-to-list 'org-agenda-files "~/orgfiles/drive/todo.org")
 (add-hook 'org-agenda-mode-hook (lambda() (org-gcal-sync)))
 (add-hook 'org-capture-after-finalize-hook (lambda() (org-gcal-sync)))
 
