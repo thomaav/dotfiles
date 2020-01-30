@@ -15,6 +15,8 @@ setopt HIST_IGNORE_SPACE
 export WORDCHARS=''
 export PATH=$PATH:/home/thomaav/Xilinx/Vivado/2016.4/bin
 
+export PATH=$PATH:/home/thomaav/.local/bin
+
 # colors
 autoload -U colors && colors
 PS1="λ %~> "

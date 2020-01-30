@@ -454,3 +454,8 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 
 ;; Agenda and TODO stuff.
 (require 'thomaav-gcal)
+
+;; Use my own $PATH.
+(use-package exec-path-from-shell
+  :config
+  (exec-path-from-shell-initialize))
