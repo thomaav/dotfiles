@@ -1,7 +1,7 @@
 (define-coding-system-alias 'utf8 'utf-8)
 
 ;; TLS 1.3.
-(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+;; (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 
 ;; Add package repositories.
 (require 'package)
@@ -31,10 +31,10 @@
 (add-to-list 'load-path (locate-user-emacs-file "lisp/"))
 
 ;; Font settings.
-(set-default-font "Consolas")
-(set-face-attribute 'default nil :family "Consolas")
+(set-default-font "Dejavu Sans Mono")
+(set-face-attribute 'default nil :family "Dejavu Sans Mono")
 (set-face-attribute 'default nil :foundry "outline")
-(set-face-attribute 'default nil :height 130)
+(set-face-attribute 'default nil :height 105)
 
 ;; Put custom settings in its own file.
 (setq custom-file (concat user-emacs-directory "custom.el"))
@@ -86,6 +86,10 @@
 (add-hook 'c++-mode-hook 'c-mode-indentation)
 (add-hook 'glsl-mode-hook 'c-mode-indentation)
 
+;; Shader file endings.
+(add-to-list 'auto-mode-alist '("\\.vert\\'" . c-mode))
+(add-to-list 'auto-mode-alist '("\\.frag\\'" . c-mode))
+
 ;; avy-goto-char key binding. Rebind TAB properly as it does C-i by
 ;; default. avy-goto-char only works in GUI mode.
 (define-key input-decode-map [?\C-i] [C-i])
@@ -103,6 +107,7 @@
 
 ;; Project handling.
 (use-package projectile
+  :ensure t
   :config
   (projectile-mode 1)
 
@@ -166,35 +171,6 @@
 (global-set-key (kbd "å") (kbd "/"))
 (global-set-key (kbd "ð") 'undo)
 (global-set-key (kbd "C-ø") 'subword-backward-kill)
-
-;; Org export engine.
-(use-package ox-latex
-  :config
-  (unless (boundp 'org-latex-classes)
-    (setq org-latex-classes nil)))
-
-;; Add general LaTeX packages.
-(add-to-list 'org-latex-packages-alist '("" "caption" t))
-
-;; Add general LaTeX classes.
-(add-to-list 'org-latex-classes
-             '("thomaav"
-               "\\documentclass[absract=on,a4paper]{scrreprt}"
-               ("\\section{%s}" . "\\section*{%s}")
-               ("\\subsection{%s}" . "\\subsection*{%s}")
-               ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-               ("\\paragraph{%s}" . "\\paragraph*{%s}")
-               ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-
-;; Minted color sources in LaTeX exports.
-(setq org-latex-listings 'minted
-      org-latex-packages-alist '(("" "minted"))
-      org-latex-pdf-process
-      '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-        "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
-
-(setq org-latex-minted-options '(("breaklines" "true")
-                                 ("breakanywhere" "true")))
 
 ;; ivy-mode. Mostly used for counsel-ag and swiper, using helm elsewhere.
 (use-package swiper)
@@ -379,7 +355,7 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 ;; ccls for jumping to definitions in C++.
 (use-package ccls
   :config
-  (setq ccls-executable "/home/thomaav/dev/ccls/Release/ccls")
+  (setq ccls-executable "/home/thoave01/dev/ccls/Release/ccls")
   (setq ccls-extra-init-params '(:index (:comments 0))))
 
 ;; LSP for C-mode. Requires an actual LSP server, of course.
@@ -429,33 +405,29 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (add-hook 'js2-mode-hook 'add-node-modules-path)
 (add-hook 'js2-mode-hook 'prettier-js-mode)
 
-;; TeX. Semesterprosjekt.
-(use-package auctex-latexmk)
-
-(defun tex-mode-hook ()
-  (auctex-latexmk-setup)
-  (flyspell-mode))
-
-(add-hook 'TeX-mode-hook 'tex-mode-hook)
-(setq-default TeX-master nil)
-
-;; Custom macro to autofill full of current paragraph.
-(fset 'customfill
-   [?\M-x ?i ?r ?e ?g ?i ?s ?t ?e ?r ?- ?p ?o ?i ?n ?t ?- ?t ?o ?- ?r ?e ?g ?i
-   ?s ?t ?e ?r return ?\M-e ?\C- ?\M-a ?\M-q ?\M-, return])
-(defun custom-fill-hook()
-  (interactive)
-  (execute-kbd-macro (symbol-function 'customfill)))
-(global-set-key (kbd "C-M-q") 'custom-fill-hook)
-
 ;; Python LSP.
 (require 'lsp-clients)
 (add-hook 'python-mode-hook 'lsp)
-
-;; Agenda and TODO stuff.
-(require 'thomaav-gcal)
 
 ;; Use my own $PATH.
 (use-package exec-path-from-shell
   :config
   (exec-path-from-shell-initialize))
+
+;; Hydra.
+(use-package hydra
+  :bind ("C-o" . hydra-lsp/body))
+
+(defhydra hydra-lsp (:color blue)
+  "
+  ^
+  ^lsp^
+  ^
+  _r_ rename
+  _t_ find definition
+  _v_ find references
+  ^
+  "
+  ("r" lsp-rename)
+  ("t" lsp-find-definition)
+  ("v" lsp-find-references))
