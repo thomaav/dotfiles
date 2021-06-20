@@ -10,8 +10,6 @@
 (add-to-list 'package-archives
              '("melpa-stable" . "http://stable.melpa.org/packages/") t)
 (add-to-list 'package-archives
-             '("marmalade" . "https://marmalade-repo.org/packages/") t)
-(add-to-list 'package-archives
              '("gnu elpa" . "https://elpa.gnu.org/packages/") t)
 
 ;; Refresh contents of all package repositories.
@@ -31,10 +29,10 @@
 (add-to-list 'load-path (locate-user-emacs-file "lisp/"))
 
 ;; Font settings.
-(set-default-font "Dejavu Sans Mono")
+(set-frame-font "Dejavu Sans Mono")
 (set-face-attribute 'default nil :family "Dejavu Sans Mono")
 (set-face-attribute 'default nil :foundry "outline")
-(set-face-attribute 'default nil :height 105)
+(set-face-attribute 'default nil :height 98)
 
 ;; Put custom settings in its own file.
 (setq custom-file (concat user-emacs-directory "custom.el"))
@@ -43,8 +41,8 @@
 (defun prev-window ()
   (interactive)
   (other-window -1))
-(define-key global-map (kbd "M-n") 'other-window)
-(define-key global-map (kbd "M-p") 'prev-window)
+(bind-key* "M-n" 'other-window)
+(bind-key* "M-p" 'prev-window)
 
 ;; Automatically create pairs of brackets.
 (electric-pair-mode 1)
@@ -77,33 +75,41 @@
 (add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
 (c-set-offset 'access-label '-)
 
+;; Hop between .cpp and .h.
+(global-set-key (kbd "þ") 'ff-find-other-file)
+
 ;; Indentation for C/C++/GLSL.
 (defvaralias 'c-basic-offset 'tab-width)
 (defun c-mode-indentation ()
   (setq-default tab-width 4)
-  (setq-default indent-tabs-mode nil))
+  (setq-default indent-tabs-mode true))
 (add-hook 'c-mode-hook 'c-mode-indentation)
 (add-hook 'c++-mode-hook 'c-mode-indentation)
 (add-hook 'glsl-mode-hook 'c-mode-indentation)
 
+;; Folding for C++.
+(bind-key* "C-c C-j" 'hs-hide-block)
+(bind-key* "C-c C-k" 'hs-show-block)
+
 ;; Shader file endings.
 (add-to-list 'auto-mode-alist '("\\.vert\\'" . c-mode))
 (add-to-list 'auto-mode-alist '("\\.frag\\'" . c-mode))
-
-;; avy-goto-char key binding. Rebind TAB properly as it does C-i by
-;; default. avy-goto-char only works in GUI mode.
-(define-key input-decode-map [?\C-i] [C-i])
-(use-package avy
-  :bind (("<C-i>" . avy-goto-char)
-	 ("TAB" . #'indent-for-tab-command)))
+(add-to-list 'auto-mode-alist '("\\.comp\\'" . c-mode))
+(add-to-list 'auto-mode-alist '("\\.tese\\'" . c-mode))
+(add-to-list 'auto-mode-alist '("\\.tesc\\'" . c-mode))
+(add-to-list 'auto-mode-alist '("\\.geom\\'" . c-mode))
 
 ;; Helm selection narrowing.
 (use-package helm-config
   :bind (("M-y" . helm-show-kill-ring)
 	 ("C-x b" . helm-mini)
 	 ("M-x" . helm-M-x)
-	 ("C-x M-f" . helm-find-files))
+	 ("C-x M-f" . helm-find-files)
+     ("C-x C-b" . helm-buffers-list))
   :config (helm-mode 1))
+
+(setq x-wait-for-event-timeout nil)
+(setq helm-buffer-max-length nil)
 
 ;; Project handling.
 (use-package projectile
@@ -112,8 +118,9 @@
   (projectile-mode 1)
 
   ;; Don't use elisp for indexing. Matters for very big projects.
-  (setq projectile-indexing-method 'alien))
-
+  (setq projectile-indexing-method 'hybrid)
+  (setq projectile-enable-caching t)
+  (setq projectile-mode-line "Projectile"))
 
 (use-package helm-projectile
   :bind (("C-c C-p" . helm-projectile-switch-project)
@@ -124,13 +131,21 @@
 (use-package popwin
   :config (popwin-mode 1))
 
-;; Display a flash of light at the cursor when scrolling.
-(use-package beacon
-  :config (beacon-mode 1))
+(add-to-list 'display-buffer-alist
+  `(,(rx bos "*helm" (* not-newline) "*" eos)
+    (display-buffer-in-side-window)
+    (inhibit-same-window . t)
+    (window-height . 0.4)))
 
 ;; Scroll window five lines from the bottom instead.
 (use-package smooth-scrolling
-  :config (smooth-scrolling-mode 1))
+  :config
+  (smooth-scrolling-mode 1)
+  (setq-default redisplay-dont-pause t
+				scroll-conservatively 10000
+				scroll-step 1
+				scroll-margin 1
+				scroll-preserve-screen-position 1))
 
 ;; C-q will expand a region for marking, specifically regions within brackets.
 (use-package expand-region
@@ -159,7 +174,10 @@
 
 ;; Replace moving between paragraphs with moving between blank lines.
 (global-set-key (kbd "M-e") 'next-blank-line)
-(global-set-key (kbd "M-a") 'previous-blank-line)
+(global-set-key (kbd "M-q") 'previous-blank-line)
+
+(bind-key* (kbd "C-M-e") 'end-of-defun)
+(bind-key* (kbd "C-M-q") 'beginning-of-defun)
 
 ;; Misc. rebindings. This uses AltGr combinations to free keys.
 (global-set-key (kbd "ø") (kbd "{"))
@@ -171,6 +189,18 @@
 (global-set-key (kbd "å") (kbd "/"))
 (global-set-key (kbd "ð") 'undo)
 (global-set-key (kbd "C-ø") 'subword-backward-kill)
+(global-set-key (kbd "C-c C-r") 'query-replace)
+(global-set-key (kbd "C-M-r") 'query-replace-regexp)
+(global-set-key (kbd "C-M-o") 'newline)
+(global-set-key (kbd "C-M-f") 'describe-buffer-file-name)
+(global-set-key (kbd "C-M-m") 'magit-blame-addition)
+
+(bind-key* (kbd "C-c C-n") 'flycheck-next-error)
+
+(bind-key* (kbd "C-c C-c") 'copy-to-register)
+(bind-key* (kbd "C-c C-v") 'insert-register)
+
+(bind-key* (kbd "½") (kbd "|"))
 
 ;; ivy-mode. Mostly used for counsel-ag and swiper, using helm elsewhere.
 (use-package swiper)
@@ -178,16 +208,19 @@
 (use-package ivy
   :config (ivy-mode 1))
 
+;; counsel-grep-or-ag is replaced with swiper-isearch for start-up speed.
 (global-set-key (kbd "ª") 'counsel-ag)
-(global-set-key (kbd "C-s") 'swiper)
-(global-set-key (kbd "C-r") 'swiper)
+(global-set-key (kbd "C-s") 'swiper-isearch)
+(global-set-key (kbd "C-r") 'swiper-isearch)
+
+(setq-default ivy-height 30)
 
 ;; Key bind scrolling up and down _in place_ without moving the cursor.
 (defun scroll-in-place (scroll-up)
   "Scroll window up (or down) without moving point (if possible).
 
 SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
-  (interactive)
+  (interactive) 
   (let ((pos (point))
                 (col (current-column))
                 (up-or-down (if scroll-up 1 -1)))
@@ -210,9 +243,6 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
   "Scroll window up without moving point (if possible)."
   (interactive)
   (scroll-in-place nil))
-
-(global-set-key (kbd "π") 'scroll-up-in-place)
-(global-set-key (kbd "“") 'scroll-down-in-place)
 
 ;; Use AltGr + f/b to go to beginning/end of next word in a Vim-like manner.
 (require 'misc)
@@ -239,7 +269,8 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
   '(define-key company-search-map (kbd "C-t") 'company-search-toggle-filtering))
 
 ;; Oh boy..
-(setq company-idle-delay 0)
+(setq company-idle-delay 0.2)
+(global-set-key (kbd "C-M-n") 'company-search-candidates)
 
 ;; With autocomplete comes flycheck as well.
 (use-package flycheck)
@@ -306,7 +337,9 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 
 ;; Save position in registers to use like bookmarks.
 (use-package iregister
-  :bind ("C-," . iregister-point-to-register))
+  :bind
+  ("©" . iregister-point-to-register)
+  ("“" . iregister-last-marker))
 
 (defun iregister-last-marker()
   (interactive)
@@ -319,17 +352,36 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (use-package bison-mode)
 (add-to-list 'auto-mode-alist '("\\.yy\\'" . bison-mode))
 
-;; column-width should (almost) always be 80.
-(setq-default fill-column 80)
+;; Default column-width of 120.
+(setq-default fill-column 120)
+
+(add-hook 'org-mode-hook
+  (lambda ()
+    (setq fill-column 80)))
 
 ;; General LSP stuff.
+(defun my-lsp-ui-mode-hook ()
+  :config
+  (lsp-ui-peek-enable t)
+  (setq-default lsp-ui-peek-show-directory t)
+  (setq-default lsp-ui-peek-always-show t)
+  (setq-default lsp-ui-peek-peek-height 40)
+  (setq-default gc-cons-threshold 100000000)
+  (setq-default read-process-output-max (* 2048 2048))
+  (setq-default lsp-completion-provider :capf)
+  (setq-default lsp-idle-delay 0.500)
+  (setq-default lsp-log-io nil)
+  (setq-default lsp-ui-peek-show-directory nil)
+  (lsp-ui-mode))
+
 (require 'lsp)
 (use-package lsp-mode
-  :bind (("C-t" . lsp-find-definition)
-	 ("C-M-t" . lsp-find-references)))
-(add-hook 'lsp-mode-hook 'lsp-ui-mode)
+  :bind
+  (("C-t" . lsp-ui-peek-find-definitions)
+   ("C-M-t" . lsp-ui-peek-find-references)))
 
-;; I'm unsure if I even use this stuff.
+(add-hook 'lsp-mode-hook 'my-lsp-ui-mode-hook)
+
 (use-package lsp-ui
   :config
   (setq lsp-ui-sideline-enable t
@@ -337,11 +389,10 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
       lsp-ui-sideline-show-hover nil)
   (setq lsp-ui-doc-enable nil))
 
-;; Autocompletion framework with LSP.
-(use-package company-lsp
-  :config
-  (setq company-lsp-cache-candidates nil)
-  (setq lsp-enable-snippet nil))
+;; Edit multiple semantics matches in parallel.
+(use-package iedit
+  :bind
+  ("C-r" . lsp-iedit-highlights))
 
 ;; Projectile for guessing root of LSP, nice with stuff like Python that you've
 ;; just cloned.
@@ -355,7 +406,7 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 ;; ccls for jumping to definitions in C++.
 (use-package ccls
   :config
-  (setq ccls-executable "/home/thoave01/dev/ccls/Release/ccls")
+  (setq ccls-executable "ccls")
   (setq ccls-extra-init-params '(:index (:comments 0))))
 
 ;; LSP for C-mode. Requires an actual LSP server, of course.
@@ -381,10 +432,10 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 
 ;; Move buffers with key bindings.
 (use-package buffer-move
-  :bind (("<C-S-up>" . buf-move-up)
-	 ("<C-S-down>" . buf-move-left)
-	 ("<C-S-left>" . buf-move-left)
-	 ("<C-S-right>" . buf-move-right)))
+  :bind (("<C-up>" . buf-move-up)
+	 ("<C-down>" . buf-move-left)
+	 ("<C-left>" . buf-move-left)
+	 ("<C-right>" . buf-move-right)))
 
 ;; Inhibit startup screen.
 (setq-default inhibit-startup-screen t)
@@ -406,7 +457,6 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (add-hook 'js2-mode-hook 'prettier-js-mode)
 
 ;; Python LSP.
-(require 'lsp-clients)
 (add-hook 'python-mode-hook 'lsp)
 
 ;; Use my own $PATH.
@@ -414,20 +464,157 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
   :config
   (exec-path-from-shell-initialize))
 
-;; Hydra.
-(use-package hydra
-  :bind ("C-o" . hydra-lsp/body))
+;; Get buffer file name.
+(defun describe-buffer-file-name ()
+  (interactive)
+  (describe-variable 'buffer-file-name))
 
-(defhydra hydra-lsp (:color blue)
-  "
-  ^
-  ^lsp^
-  ^
-  _r_ rename
-  _t_ find definition
-  _v_ find references
-  ^
-  "
-  ("r" lsp-rename)
-  ("t" lsp-find-definition)
-  ("v" lsp-find-references))
+;; Hydra.
+(use-package hydra)
+
+;; Useful for new unfamiliar code bases.
+(which-function-mode)
+
+;; When TAB does not work.
+(global-set-key (kbd "§") 'indent-for-tab-command)
+
+;; Smart tabs.
+(use-package smart-tabs-mode
+  :config
+  (smart-tabs-insinuate 'c))
+
+;; clang-format.
+(use-package clang-format
+  :config
+  (smart-tabs-insinuate 'c))
+
+(defun my-clang-format-save-hook ()
+  (when (eq major-mode 'c++-mode)
+    (clang-format-buffer)))
+(add-hook 'before-save-hook 'my-clang-format-save-hook)
+
+;; magit.
+(use-package magit)
+
+;; goto-line.
+(global-set-key (kbd "C-M-p") 'goto-line)
+
+;; truncate lines.
+(setq-default truncate-lines nil)
+
+;; centaur-tabs.
+(use-package centaur-tabs
+  :ensure t
+  :config
+  (setq centaur-tabs-set-bar 'over
+		centaur-tabs-bar-set-icons t
+		centaur-tabs-gray-out-icons 'buffer
+		centaur-tabs-height 24
+		centaur-tabs-set-modified-marker t
+		centaur-tabs-modified-marker "*")
+  (centaur-tabs-mode t)
+  :bind
+  (("C-c <C-left>" . centaur-tabs-backward)
+   ("C-c <C-right>" . centaur-tabs-forward)))
+
+(custom-set-faces
+ '(centaur-tabs-unselected ((t (:background "#3D3C3D" :foreground "white" :overline nil :underline nil)))))
+
+(global-set-key (kbd "C-c <C-down>") 'kill-current-buffer)
+
+;; clipboard.
+(setq select-enable-clipboard t)
+
+;; gdb.
+(eval-after-load 'comint
+  '(progn
+    (define-key comint-mode-map (kbd "<up>") 'comint-previous-input)
+    (define-key comint-mode-map (kbd "C-p") 'comint-previous-input)
+    (define-key comint-mode-map (kbd "<down>") 'comint-next-input)
+    (define-key comint-mode-map (kbd "C-n") 'comint-previous-input)))
+
+(defun toggle-window-dedicated ()
+  "Control whether or not Emacs is allowed to display another
+buffer in current window."
+  (interactive)
+  (message
+   (if (let (window (get-buffer-window (current-buffer)))
+         (set-window-dedicated-p window (not (window-dedicated-p window))))
+       "%s: Can't touch this!"
+     "%s is up for grabs.")
+   (current-buffer)))
+(global-set-key (kbd "C-c t") 'toggle-window-dedicated)
+
+(setq-default split-width-threshold nil)
+(setq-default split-height-threshold nil)
+
+(setq-default gdb-show-main t)
+
+;; Undo changes to windows.
+(when (fboundp 'winner-mode)
+  (winner-mode 1))
+
+;; Paste previously yanked (i.e. -2).
+(global-set-key (kbd "C-M-y") '(lambda () (interactive) (yank 2)))
+
+;; Get rid of cl warnings.
+(setq byte-compile-warnings '(cl-functions))
+
+;; Line numbers.
+(add-hook 'prog-mode-hook #'display-line-numbers-mode)
+(setq display-line-numbers-type 'relative)
+
+;; key-chord.
+(use-package key-chord
+  :ensure t
+  :config (key-chord-mode 1))
+
+(setq key-chord-two-keys-delay .015
+      key-chord-one-key-delay .020)
+
+;; evil-mode.
+(use-package evil
+  :ensure t
+  :config
+  (evil-mode 1))
+
+;; Replace insert mode with emacs mode.
+(setq evil-insert-state-map (make-sparse-keymap))
+(setq-default evil-default-state 'evil-insert-state)
+(define-key evil-insert-state-map (kbd "<escape>") 'evil-normal-state)
+
+;; jk to escape back to normal mode.
+(key-chord-define-global "jk" 'evil-normal-state)
+
+;; evil keybindings.
+(define-key evil-normal-state-map "t" 'avy-goto-char)
+(define-key evil-normal-state-map "q" 'kill-current-buffer)
+(define-key evil-normal-state-map "s" 'save-buffer)
+
+(define-key evil-normal-state-map "h" 'evil-backward-word-begin)
+(define-key evil-normal-state-map "l" 'evil-forward-word-end)
+
+(define-key evil-normal-state-map "n" 'other-window)
+(define-key evil-normal-state-map "p" 'prev-window)
+
+(define-key evil-normal-state-map "," 'lsp-ui-peek-find-definitions)
+(define-key evil-normal-state-map "." 'lsp-ui-peek-find-references)
+
+(define-key evil-normal-state-map (kbd "C-p") 'evil-insert-state)
+(define-key evil-normal-state-map (kbd "C-n") 'evil-insert-state)
+(define-key evil-normal-state-map (kbd "C-@") 'evil-insert-state)
+
+;; Mouse stuff.
+(unless window-system
+  (require 'mouse)
+  (xterm-mouse-mode t)
+
+  (global-set-key [mouse-4] (lambda ()
+                              (interactive)
+                              (scroll-down 3)))
+  (global-set-key [mouse-5] (lambda ()
+                              (interactive)
+                              (scroll-up 3)))
+
+  (defun track-mouse (e))
+  (setq mouse-sel-mode t))
