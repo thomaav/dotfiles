@@ -98,6 +98,11 @@
 (add-to-list 'auto-mode-alist '("\\.tese\\'" . c-mode))
 (add-to-list 'auto-mode-alist '("\\.tesc\\'" . c-mode))
 (add-to-list 'auto-mode-alist '("\\.geom\\'" . c-mode))
+(add-to-list 'auto-mode-alist '("\\.rgen\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.rahit\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.rint\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.rchit\\'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.rmiss\\'" . c++-mode))
 
 ;; Helm selection narrowing.
 (use-package helm-config
@@ -136,6 +141,8 @@
     (display-buffer-in-side-window)
     (inhibit-same-window . t)
     (window-height . 0.4)))
+
+(push '("*Backtrace*") popwin:special-display-config)
 
 ;; Scroll window five lines from the bottom instead.
 (use-package smooth-scrolling
@@ -189,7 +196,6 @@
 (global-set-key (kbd "å") (kbd "/"))
 (global-set-key (kbd "ð") 'undo)
 (global-set-key (kbd "C-ø") 'subword-backward-kill)
-(global-set-key (kbd "C-c C-r") 'query-replace)
 (global-set-key (kbd "C-M-r") 'query-replace-regexp)
 (global-set-key (kbd "C-M-o") 'newline)
 (global-set-key (kbd "C-M-f") 'describe-buffer-file-name)
@@ -269,8 +275,9 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
   '(define-key company-search-map (kbd "C-t") 'company-search-toggle-filtering))
 
 ;; Oh boy..
-(setq company-idle-delay 0.2)
-(global-set-key (kbd "C-M-n") 'company-search-candidates)
+(setq company-idle-delay 0.0)
+(setq company-minimum-prefix-length 1)
+(global-set-key (kbd "C-x C-n") 'company-search-candidates)
 
 ;; With autocomplete comes flycheck as well.
 (use-package flycheck)
@@ -365,17 +372,25 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
   (lsp-ui-peek-enable t)
   (setq-default lsp-ui-peek-show-directory t)
   (setq-default lsp-ui-peek-always-show t)
-  (setq-default lsp-ui-peek-peek-height 40)
-  (setq-default gc-cons-threshold 100000000)
-  (setq-default read-process-output-max (* 2048 2048))
-  (setq-default lsp-completion-provider :capf)
-  (setq-default lsp-idle-delay 0.500)
-  (setq-default lsp-log-io nil)
-  (setq-default lsp-ui-peek-show-directory nil)
+  (setq lsp-ui-peek-peek-height 40)
+  (setq gc-cons-threshold 100000000)
+  (setq read-process-output-max (* 2048 2048))
+  (setq lsp-completion-provider :capf)
+  (setq lsp-idle-delay 0.500)
+  (setq lsp-log-io nil)
+  (setq lsp-ui-peek-show-directory nil)
+  (setq lsp-signature-mode t)
   (lsp-ui-mode))
 
 (require 'lsp)
 (use-package lsp-mode
+  :config
+  (setq lsp-clients-clangd-executable "clangd")
+  (setq lsp-clients-clangd-args '("--enable-config"
+				  "--limit-results=0"
+				  "--background-index"
+				  "--header-insertion=never"
+				  "--compile-commands-dir=/home/thoave01/dev/graphics"))
   :bind
   (("C-t" . lsp-ui-peek-find-definitions)
    ("C-M-t" . lsp-ui-peek-find-references)))
@@ -388,6 +403,15 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
       lsp-ui-sideline-show-symbol nil
       lsp-ui-sideline-show-hover nil)
   (setq lsp-ui-doc-enable nil))
+
+(use-package lsp-treemacs)
+(use-package helm-lsp)
+
+;; Autocompletion framework with LSP.
+(use-package company-lsp
+  :config
+  (setq company-lsp-cache-candidates nil)
+  (setq lsp-enable-snippet nil))
 
 ;; Edit multiple semantics matches in parallel.
 (use-package iedit
@@ -402,12 +426,6 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 (setq lsp-enable-on-type-formatting nil)
 (setq lsp-enable-indentation nil)
 (setq lsp-before-save-edits nil)
-
-;; ccls for jumping to definitions in C++.
-(use-package ccls
-  :config
-  (setq ccls-executable "ccls")
-  (setq ccls-extra-init-params '(:index (:comments 0))))
 
 ;; LSP for C-mode. Requires an actual LSP server, of course.
 (add-hook 'c-mode-common-hook #'lsp)
@@ -498,28 +516,12 @@ SCROLL-Up is non-nil to scroll up one line, nil to scroll down."
 
 ;; goto-line.
 (global-set-key (kbd "C-M-p") 'goto-line)
+(global-set-key (kbd "C-ø") 'avy-goto-char)
 
 ;; truncate lines.
 (setq-default truncate-lines nil)
 
-;; centaur-tabs.
-(use-package centaur-tabs
-  :ensure t
-  :config
-  (setq centaur-tabs-set-bar 'over
-		centaur-tabs-bar-set-icons t
-		centaur-tabs-gray-out-icons 'buffer
-		centaur-tabs-height 24
-		centaur-tabs-set-modified-marker t
-		centaur-tabs-modified-marker "*")
-  (centaur-tabs-mode t)
-  :bind
-  (("C-c <C-left>" . centaur-tabs-backward)
-   ("C-c <C-right>" . centaur-tabs-forward)))
-
-(custom-set-faces
- '(centaur-tabs-unselected ((t (:background "#3D3C3D" :foreground "white" :overline nil :underline nil)))))
-
+;; Kill current buffer.
 (global-set-key (kbd "C-c <C-down>") 'kill-current-buffer)
 
 ;; clipboard.
@@ -556,9 +558,6 @@ buffer in current window."
 
 ;; Paste previously yanked (i.e. -2).
 (global-set-key (kbd "C-M-y") '(lambda () (interactive) (yank 2)))
-
-;; Get rid of cl warnings.
-(setq byte-compile-warnings '(cl-functions))
 
 ;; Line numbers.
 (add-hook 'prog-mode-hook #'display-line-numbers-mode)
@@ -618,3 +617,57 @@ buffer in current window."
 
   (defun track-mouse (e))
   (setq mouse-sel-mode t))
+
+;; Warnings.
+(setq comp-async-report-warnings-errors nil)
+(setq warning-minimum-level :error)
+(setq byte-compile-warnings '(cl-functions))
+
+;; Always enable tabs.
+(tab-bar-mode 1)
+
+;; Rename a file.
+(defun rename-current-buffer-file ()
+  "Renames current buffer and file it is visiting."
+  (interactive)
+  (let* ((name (buffer-name))
+        (filename (buffer-file-name))
+        (basename (file-name-nondirectory filename)))
+    (if (not (and filename (file-exists-p filename)))
+        (error "Buffer '%s' is not visiting a file!" name)
+      (let ((new-name (read-file-name "New name: " (file-name-directory filename) basename nil basename)))
+        (if (get-buffer new-name)
+            (error "A buffer named '%s' already exists!" new-name)
+          (rename-file filename new-name 1)
+          (rename-buffer new-name)
+          (set-visited-file-name new-name)
+          (set-buffer-modified-p nil)
+          (message "File '%s' successfully renamed to '%s'"
+                   name (file-name-nondirectory new-name)))))))
+
+(global-set-key (kbd "C-x C-r") 'rename-current-buffer-file)
+
+;; Symbol overlaying.
+(use-package symbol-overlay
+  :ensure t
+  :bind
+  (("C-c i" . symbol-overlay-put)
+   ("C-c o" . symbol-overlay-remove-all)))
+
+;; Dashboard.
+(use-package dashboard
+  :ensure t
+  :config
+  (dashboard-setup-startup-hook))
+
+;; Visual regex query-replace.
+(use-package visual-regexp
+  :ensure t
+  :bind
+  (("C-c C-r" . vr/query-replace)))
+
+;; Debugger.
+(use-package realgud
+  :ensure t)
+
+;; (TODO): Consider a cheatsheet. Use cheatsheet package.
