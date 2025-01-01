@@ -344,7 +344,9 @@
 (use-package iregister
   :bind
   ("s-c" . iregister-point-to-register)
-  ("s-v" . iregister-last-marker))
+  ("s-v" . iregister-last-marker)
+  ("©" . iregister-point-to-register)
+  ("“" . iregister-last-marker))
 
 (bind-key* (kbd "M-,") 'iregister-last-marker)
 
@@ -381,8 +383,11 @@
 
 ;; Misc. rebindings.
 (bind-key* (kbd "s-d") 'undo)
+(bind-key* (kbd "ð") 'undo)
 (bind-key* (kbd "s-f") 'forward-to-word)
+(bind-key* (kbd "đ") 'forward-to-word)
 (bind-key* (kbd "s-b") 'backward-to-word)
+(bind-key* (kbd "”") 'backward-to-word)
 (bind-key* (kbd "C-l") 'recenter)
 (bind-key* (kbd "C-M-p") 'goto-line)
 (bind-key* (kbd "C-M-i") 'compile)
@@ -394,7 +399,9 @@
 (bind-key* (kbd "Æ") (kbd ")"))
 (bind-key* (kbd "Æ") (kbd ")"))
 (bind-key* (kbd "s-e") (kbd "["))
+(bind-key* (kbd "€") (kbd "["))
 (bind-key* (kbd "s-r") (kbd "]"))
+(bind-key* (kbd "®") (kbd "["))
 (bind-key* (kbd "@") (lambda () (interactive) (insert "'")))
 (bind-key* (kbd "s-2") (lambda () (interactive) (insert "@")))
 (bind-key* (kbd "C-ø") (lambda () (interactive) (insert "\\")))
@@ -402,4 +409,5 @@
 (bind-key* (kbd "M-c") 'comment-region)
 (bind-key* (kbd "C-x M-c") 'uncomment-region)
 (bind-key* (kbd "s-t") 'ff-find-other-file)
+(bind-key* (kbd "þ") 'ff-find-other-file)
 (bind-key* (kbd "C-c C-n") 'flycheck-next-error)
