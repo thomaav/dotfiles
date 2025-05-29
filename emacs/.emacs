@@ -1,5 +1,8 @@
 (define-coding-system-alias 'utf8 'utf-8)
 
+;; Local for Linux only.
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+
 ;; Add package repositories.
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
@@ -20,10 +23,10 @@
 (setq use-package-always-ensure t)
 
 ;; Font settings.
-(set-frame-font "Consolas")
-(set-face-attribute 'default nil :family "Consolas")
+(set-frame-font "Dejavu Sans Mono")
+(set-face-attribute 'default nil :family "Dejavu Sans Mono")
 (set-face-attribute 'default nil :foundry "outline")
-(set-face-attribute 'default nil :height 112)
+(set-face-attribute 'default nil :height 100)
 
 ;; Put custom settings in its own file.
 (setq custom-file (concat user-emacs-directory "custom.el"))
@@ -94,7 +97,7 @@
 
 (push '("*Backtrace*") popwin:special-display-config)
 (push '("*Warnings*") popwin:special-display-config)
-(push '("*compilation*") popwin:special-display-config)
+(push '("*compilation*" :height 40) popwin:special-display-config)
 
 ;; Scroll window five lines from the bottom instead.
 (use-package smooth-scrolling
@@ -127,6 +130,7 @@
   :config (ivy-mode 1))
 
 (bind-key* (kbd "s-a") 'counsel-ag)
+(bind-key* (kbd "ª") 'counsel-ag)
 (bind-key* (kbd "C-s") 'swiper-isearch)
 (bind-key* (kbd "C-r") 'swiper-isearch)
 
@@ -318,11 +322,6 @@
 
 (global-set-key (kbd "C-x C-r") 'rename-current-buffer-file)
 
-;; Smart tabs.
-(use-package smart-tabs-mode
-  :config
-  (smart-tabs-insinuate 'c))
-
 ;; Default column-width of 120.
 (setq-default fill-column 120)
 
@@ -330,7 +329,7 @@
 (defvaralias 'c-basic-offset 'tab-width)
 (defun c-mode-indentation ()
   (setq-default tab-width 4)
-  (setq-default indent-tabs-mode true))
+  (setq-default indent-tabs-mode 1))
 (add-hook 'c-mode-hook 'c-mode-indentation)
 (add-hook 'c++-mode-hook 'c-mode-indentation)
 (add-hook 'glsl-mode-hook 'c-mode-indentation)
@@ -381,6 +380,12 @@
 (bind-key* (kbd "M-e") 'next-blank-line)
 (bind-key* (kbd "M-q") 'previous-blank-line)
 
+;; Compilation.
+(setq compilation-scroll-output t)
+
+;; I don't want any copilot stuff.
+(setq lsp-copilot-applicable-fn (-const nil))
+
 ;; Misc. rebindings.
 (bind-key* (kbd "s-d") 'undo)
 (bind-key* (kbd "ð") 'undo)
@@ -391,8 +396,9 @@
 (bind-key* (kbd "C-l") 'recenter)
 (bind-key* (kbd "C-M-p") 'goto-line)
 (bind-key* (kbd "C-M-i") 'compile)
-(bind-key* (kbd "C-M-r") (lambda() (interactive) (compile "cd build && make && cd ./bin && ./tbd")))
-(bind-key* (kbd "C-M-c") (lambda() (interactive) (compile "cd build && make")))
+(bind-key* (kbd "C-M-r") (lambda() (interactive) (compile "cd /home/tms/dev/lax/build && make -j16 && ./bin/editor")))
+(bind-key* (kbd "C-M-w") (lambda() (interactive) (compile "cd build && make -j16 && cd ./bin && PLAYGROUND=1 ./unhurried")))
+(bind-key* (kbd "C-M-c") (lambda() (interactive) (compile "cd /home/tms/dev/lax/build && make -j16")))
 (bind-key* (kbd "ø") (kbd "{"))
 (bind-key* (kbd "æ") (kbd "}"))
 (bind-key* (kbd "Ø") (kbd "("))
@@ -405,9 +411,14 @@
 (bind-key* (kbd "@") (lambda () (interactive) (insert "'")))
 (bind-key* (kbd "s-2") (lambda () (interactive) (insert "@")))
 (bind-key* (kbd "C-ø") (lambda () (interactive) (insert "\\")))
-(bind-key* (kbd "'") (lambda () (interactive) (insert "|")))
 (bind-key* (kbd "M-c") 'comment-region)
 (bind-key* (kbd "C-x M-c") 'uncomment-region)
 (bind-key* (kbd "s-t") 'ff-find-other-file)
 (bind-key* (kbd "þ") 'ff-find-other-file)
 (bind-key* (kbd "C-c C-n") 'flycheck-next-error)
+(bind-key* (kbd "<left>") 'xref-pop-marker-stack)
+(bind-key* (kbd "<right>") 'xref-go-forward)
+(bind-key* (kbd "C-M-e") 'end-of-defun)
+(bind-key* (kbd "C-M-q") 'beginning-of-defun)
+(bind-key* (kbd "M-y") 'helm-show-kill-ring)
+
